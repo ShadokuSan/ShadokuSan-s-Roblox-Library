@@ -1,13 +1,14 @@
-# ShadokuSan's Roblox Library
+<div align="center"><h1>ShadokuSan's Roblox Library</h1></div>
 
-Testing things
+<div align="center"><h3>This is a module script that makes some common tasks, or tedious ones, easier than before.</h3></div>
 
-This is a module script that makes some common tasks, or tedious ones, easier than before
--
+#
 
-### :warning: **This is not intended to be used as a learning tool for coding, and nor do I claim to be an expert in coding. So.. take the quality and readability of this module with a little grain of salt.**
+:warning: This is not intended to be used as a learning tool for coding, and nor do I claim to be an expert in coding. So.. take the quality and readability of this module with a little grain of salt.
 
 **Module Link:** <https://www.roblox.com/library/3165359492/redirect>
+
+**Original DevForum Post:** <https://devforum.roblox.com/t/346953>
 ___
 
 ### **Usage**
