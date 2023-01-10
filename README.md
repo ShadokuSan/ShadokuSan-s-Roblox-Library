@@ -22,22 +22,21 @@ local Code = require(3165359492)
 
 ___
 
-<details>
-    <summary><h3>Variables List</h3></summary>
+<details><summary><h3>Variables List</h3></summary>
 
 | Variable | Description |
 | --- | --- |
 | Script | Refers to the module's instance itself. |
 | Warnings | Tied to the **Warnings** attribute to the module. This is used to give information in some scripts for potentially incorrect uses but is an instance that may be auto-corrected. |
 | ManualErrors | Tied to the **ManualErrors** attribute to the module. Normally, this will insert errors in areas where incorrect usage of the module likely cannot be auto-corrected and tries to send a message that will try to make some sense of what went wrong. |
-| Mods | Returns a dictionary of all module scripts you insert under this module. See [Mods](#A_Mod) for more information.|
-| Formulas | This is a table that hosts multiple semi-commonly used formulas, put into function form. See [Formulas](#A_Formulas) for more information. |
+| Mods | Returns a dictionary of all module scripts you insert under this module. See [Mods](#mods) for more information.|
+| Formulas | This is a table that hosts multiple semi-commonly used formulas, put into function form. See [Formulas](#formulas) for more information. |
 
-### <a name="A_Mod">Mods</a>
+### Mods
 
 Returns a dictionary of all module scripts you insert under this module. For example, if you have a module named "SliderHandler" then you can reference it such as: `Code.Mods["SliderHandler]`; the name of the module itself is always used to be referenced.
 
-### <a name="A_Formulas">Formulas</a>
+### Formulas
 
 This is a table that hosts multiple semi-commonly used formulas, put into function form. Followed by, `Code.Formulas.NameHere`
 
@@ -48,15 +47,14 @@ This is a table that hosts multiple semi-commonly used formulas, put into functi
 | PythagoreanTheorem | PythagoreanTheorem(Number1: number, Number2: number) | Simply returns the result of √**Number1**<sup>2</sup> + **Number2**<sup>2</sup> |
 | PointOnRay | PointOnRay(Point1: Vector3, Point2: Vector3, ReferencePoint: Vector3) | Returns a position by making a ray/line between **Point1** and **Point2**, then uses the **ReferencePoint** to find the closest position from said line. |
 | Lerp | Lerp(Start: number, End: number, Alpha: number) | Returns the number between the **Start** and **End** based on the Alpha (between 0-1). |
-</details>
 
 #
 
-<details>
-    <summary><h3>Functions List</h3></summary>
+</details>
 
-<details>
-    <summary><h3>Create</h3></summary>
+<details><summary><h3>Functions List</h3></summary>
+
+<details><summary>Create</summary>
 
 **Aliases:** new
 
@@ -72,7 +70,7 @@ This is a table that hosts multiple semi-commonly used formulas, put into functi
 | ParentFirst | boolean | false | Will set the parent before all other properties instead. |
 | Properties | table | {} | The properties of the instance you're creating. |
 
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
 ### Usage Example
 
@@ -90,8 +88,7 @@ local Part = Code.new("Part",workspace){Name = "TestPart",Same={0.5,"Transparenc
 ___
 </details>
 
-<details>
-    <summary><h3>Change</h3></summary>
+<details><summary>Change</summary>
 
 **Description:** Change multiple properties of 1 or more Instances at once.
 
@@ -103,7 +100,7 @@ ___
 | Instances | Instance / {Instance...} | nil | The instance(s) that you wish to edit. |
 | Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you're editing. |
 
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
 ### Usage Example
 
@@ -143,8 +140,7 @@ Code.Change(PartTable){CFrame = Func}
 ___
 </details>
 
-<details>
-    <summary><h3>ChangeSame</h3></summary>
+<details><summary>ChangeSame</summary>
 
 **Aliases:** Change2
 
@@ -171,8 +167,7 @@ Code.ChangeSame(true,Part1,Part2,Union1){"Massless","CanCollide"}
 ___
 </details>
 
-<details>
-    <summary><h3>Clone</h3></summary>
+<details><summary>Clone</summary>
 
 **Aliases:** Copy
 
@@ -188,7 +183,7 @@ ___
 | ParentFirst | boolean | false |  Determines if the cloned instance is parented before<sub>(true)</sub> the property changes or after.<sub>(false)</sub> Only takes effect if SameParent is set to true. |
 | Properties | table | {} | The properties/attributes of the instance you're cloning; if you're changing any. |
 
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
 ### Usage Example
 
@@ -204,8 +199,7 @@ local Brick = Code.Clone(workspace.Brick){Name = "Cloned",Same = {false,"Anchore
 ___
 </details>
 
-<details>
-    <summary><h3>Replace</h3></summary>
+<details><summary>Replace</summary>
 
 **Description:** Replace an Instance by creating a new one or cloning another in its place.
 
@@ -220,7 +214,7 @@ ___
 | ParentFirst | boolean | false | Determines if the cloned instance is parented before<sub>(true)</sub> the property changes or after.<sub>(false)</sub> Only takes effect if SameParent is set to true. |
 | Properties | table | {} | The properties/attributes of the instance you're using as the replacement; if you're changing any. |
 
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
 ### Usage Example
 
@@ -236,8 +230,7 @@ local Brick = Code.Replace(workspace.Brick1,"Part"){Name = "Brick2",CFrame = wor
 ___
 </details>
 
-<details>
-    <summary><h3>Call</h3></summary>
+<details><summary>Call</summary>
 
 **Description:** Call multiple functions on a single instance at roughly the same time.
 
@@ -251,7 +244,7 @@ ___
 
 ### Usage Example
 
-```
+```lua
 local Part1,Part2 = workspace.Part1,workspace.Part2
 local Result,FullName = Code.Call(Part1,{CanCollideWith = {Part2},GetFullName = true})
 --Result will be a boolean telling us if the 2 parts are able to interact with each other.
@@ -261,8 +254,7 @@ local Result,FullName = Code.Call(Part1,{CanCollideWith = {Part2},GetFullName = 
 ___
 </details>
 
-<details>
-    <summary><h3>Destroy</h3></summary>
+<details><summary>Destroy</summary>
 
 **Aliases:** Null, Nullify
 
@@ -277,7 +269,7 @@ ___
 
 ### Usage Example
 
-```
+```lua
 Code.Destroy(workspace.Brick1,workspace.Brick2,workspace.Brick3)
 ```
 
@@ -285,8 +277,7 @@ Code.Destroy(workspace.Brick1,workspace.Brick2,workspace.Brick3)
 ___
 </details>
 
-<details>
-    <summary><h3>Find</h3></summary>
+<details><summary>Find</summary>
 
 **Aliases:** Search
 
@@ -305,7 +296,7 @@ ___
 | IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
 | Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
 
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#A_Specials2) section for details on how to use them.
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#on-searching-values) section for details on how to use them.
 
 ### Usage Example
 
@@ -348,8 +339,7 @@ local Get = Code.Find(workspace.true,false){IsA="BasePart",Attribute={"Test",5}}
 ___
 </details>
 
-<details>
-    <summary><h3>FindChange</h3></summary>
+<details><summary>FindChange</summary>
 
 **Description:** Combination of the Find and Change functions.
 
@@ -367,11 +357,11 @@ ___
 | HasProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
 | ChangeProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re editing. |
 
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) and [On Finding Values](#A_Specials2) sections for details on how to use them.
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) and [On Finding Values](#on-searching-values) sections for details on how to use them.
 
 ### Usage Example
 
-```
+```lua
 local Get = Code.FindChange(workspace,true,false){["Position.X"> = "<=-0.5"}{Material=Enum.Material.Neon}
 print("Got:",Get)
 --Will find parts that have a position value of X that is less than or equal to -0.5, then changes all of their materials to neon. Then returns a list of the changed parts.
@@ -380,8 +370,7 @@ print("Got:",Get)
 ___
 </details>
 
-<details>
-    <summary><h3>FindDestroy</h3></summary>
+<details><summary>FindDestroy</summary>
 
 **Description:** Combination of the Find and Destroy functions.
 
@@ -397,11 +386,11 @@ ___
 | IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
 | HasProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
 
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#A_Specials2) section for details on how to use them.
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#on-searching-values) section for details on how to use them.
 
 ### Usage Example
 
-```
+```lua
 Code.FindDestroy(workspace,false,5){["Position.X"> = "<1"}
 --Will find the first 5 parts that have a position value of X that is less than 1, then destroys them.
 ```
@@ -409,8 +398,7 @@ Code.FindDestroy(workspace,false,5){["Position.X"> = "<1"}
 ___
 </details>
 
-<details>
-    <summary><h3>FindAllChildren</h3></summary>
+<details><summary>FindAllChildren</summary>
 **Aliases:** FindAll, FAC
 
 **Description:** Acts like Instance:FindFirstChild() where you can search for multiple instances.
@@ -444,8 +432,7 @@ local PartA,PartB,PartC = Code.FindAllChildren(workspace,true,"PartA","PartB","P
 ___
 </details>
 
-<details>
-    <summary><h3>IsPartOf</h3></summary>
+<details><summary>IsPartOf</summary>
 
 **Description:** Checks if an Instance is a descendant of another Instance or of a certain type of Instance.
 
@@ -472,8 +459,7 @@ local Partception = Code.IsPartOf(Part1,Part2,2)
 ___
 </details>
 
-<details>
-    <summary><h3>GetPartOf</h3></summary>
+<details><summary>GetPartOf</summary>
 
 **Description:** Fetches a property from an array of instances.
 
@@ -500,8 +486,7 @@ print(unpack(Y))
 ___
 </details>
 
-<details>
-    <summary><h3>WaitForPath</h3></summary>
+<details><summary>WaitForPath</summary>
 
 **Aliases:** WaitForDescendants, WFP
 
@@ -535,8 +520,7 @@ local MainFrame,Button = Code.WaitForPath(UI,20,"*MainFrame.Something.SomethingE
 ___
 </details>
 
-<details>
-    <summary><h3>WaitForChildren</h3></summary>
+<details><summary>WaitForChildren</summary>
 
 **Aliases:** WFC
 
@@ -576,8 +560,7 @@ local Brick1,TextureA,TextureB = Code.WFC(workspace,10,"*Brick1.Decal","Brick2.T
 ___
 </details>
 
-<details>
-    <summary><h3>Fetch</h3></summary>
+<details><summary>Fetch</summary>
 
 **Description:** Fetches multiple properties/values from an instance/table.
 
@@ -609,8 +592,7 @@ local Color,SizeX,SizeY,SizeZ = Code.Fetch(workspace.Baseplate,"Color","Size > X
 ___
 </details>
 
-<details>
-    <summary><h3>PositiveNegative</h3></summary>
+<details><summary>PositiveNegative</summary>
 
 **Aliases:** PN
 
@@ -635,8 +617,7 @@ local Number = Code.PN()   --Returns either 1 or -1
 ___
 </details>
 
-<details>
-    <summary><h3>Random</h3></summary>
+<details><summary>Random</summary>
 
 **Aliases:** Rando
 
@@ -661,8 +642,7 @@ local Chosen = Code.Rando("Hello, world!",96,workspace.Brick)
 ___
 </details>
 
-<details>
-    <summary><h3>Service</h3></summary>
+<details><summary>Service</summary>
 
 **Description:** Fetches one or more services.
 
@@ -685,8 +665,7 @@ local TS,RS,SSS = Code.Service('TweenService','RunService','ServerScriptService'
 ___
 </details>
 
-<details>
-    <summary><h3>Tween</h3></summary>
+<details><summary>Tween</summary>
 
 **Description:** A simplified method of making a tween.
 
@@ -704,11 +683,11 @@ ___
 | Delay | number | 0 | The amount of time that elapses before tween starts in seconds. |
 | Properties | table | {} | The properties that are being changed by the tween. Generally numerical. |
 
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
 ### Usage Example
 
-```
+```lua
 local Tween = Code.Tween(script.Parent){1,"Bounce","Out",1,true,0.5}{Position=script.Parent.Position+Vector3.new(0,3,0)}
 Tween:Play()
 ```
@@ -716,8 +695,7 @@ Tween:Play()
 ___
 </details>
 
-<details>
-    <summary><h3>Tweens</h3></summary>
+<details><summary>Tweens</summary>
 
 **Description:** A method for making multiple tweens of the same or similar items.
 
@@ -735,11 +713,11 @@ ___
 | Delay | number | 0 | The amount of time that elapses before tween starts in seconds. |
 | Properties | table | {} | The properties that are being changed by the tween. Generally numerical. |
 
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
 ### Usage Example
 
-```
+```lua
 local Part1,Part2 = workspace.Part1,workspace.Part2
 Code.Tweens(Part1,Part2){1,"Bounce","Out",1,true,0.5}{Position=Vector3.new(0,5,0)}
 ```
@@ -748,8 +726,7 @@ Code.Tweens(Part1,Part2){1,"Bounce","Out",1,true,0.5}{Position=Vector3.new(0,5,0
 ___
 </details>
 
-<details>
-    <summary><h3>⚠ TweenSequence</h3></summary>
+<details><summary>⚠ TweenSequence</summary>
 
 :warning: This is experimental, and may cause poor performance if used too sparingly!
 
@@ -814,8 +791,7 @@ print("Demo finished!")
 ___
 </details>
 
-<details>
-    <summary><h3>Tabs</h3></summary>
+<details><summary>Tabs</summary>
 
 **Description:** Combines Tables or otherwise into 1 table.
 
@@ -843,8 +819,7 @@ print(unpack(Tab2)) --Hi false Workspace 1 2 3 4 Test
 ___
 </details>
 
-<details>
-    <summary><h3>TabClone</h3></summary>
+<details><summary>TabClone</summary>
 
 **Description:** Clones a table.
 
@@ -857,7 +832,7 @@ ___
 
 ### Usage Example
 
-```
+```lua
 local Tab1 = {1,2,3,"a","b","c"}
 local Tab2 = Code.TabClone(Tab1)
 print(Tab1==Tab2) --false
@@ -866,8 +841,7 @@ print(Tab1==Tab2) --false
 ___
 </details>
 
-<details>
-    <summary><h3>MassConnect</h3></summary>
+<details><summary>MassConnect</summary>
 
 **Description:** A quick method for connecting multiple events and instances simultaneously.
 
@@ -884,7 +858,7 @@ ___
 Function will always use 2 variables at the start: The Instance connected, and a string of the Event connected. After that, every variable that would be ordinarily returned via the event.
 Format it as so:
 
-```
+```lua
 function TestFunction(Instance,Event,...)
 --Instance being the instance.
 --Event is a string of the event you chose to connect.
@@ -912,8 +886,7 @@ Code.MassConnect(Parts:GetChildren(),{"Touched","Changed"},Reader)
 ___
 </details>
 
-<details>
-    <summary><h3>MassDisconnect</h3></summary>
+<details><summary>MassDisconnect</summary>
 
 **Description:** Disconnects a bunch of connections.
 
@@ -950,8 +923,7 @@ Connections = Code.MassDisconnect(Connections)
 ___
 </details>
 
-<details>
-    <summary><h3>Match</h3></summary>
+<details><summary>Match</summary>
 
 **Description:** A simple replacement for using multiple "or" statements on the same variable.
 
@@ -978,8 +950,7 @@ end
 ___
 </details>
 
-<details>
-    <summary><h3>AllMatch</h3></summary>
+<details><summary>AllMatch</summary>
 
 **Description:** A simple replacement for checking if all variables must equal the same thing.
 
@@ -993,7 +964,7 @@ ___
 
 ### Usage Example
 
-```
+```lua
 local Result = Code.AllMatch(1,2,3,1)
 --Result would be false since they all need to equal the first variable (1).
 local Result = Code.AllMatch(1,1,1,1)
@@ -1003,8 +974,7 @@ local Result = Code.AllMatch(1,1,1,1)
 ___
 </details>
 
-<details>
-    <summary><h3>WaitOn</h3></summary>
+<details><summary>WaitOn</summary>
 
 **Description:** Can wait on multiple occasions, but will resume as soon as 1 of them is met.
 
@@ -1037,8 +1007,7 @@ Code.WaitOn({"Part1",Part1.Part:GetPropertyChangedSignal("Transparency")},{"Part
 ___
 </details>
 
-<details>
-    <summary><h3>Require</h3></summary>
+<details><summary>Require</summary>
 
 **Description:** Requires multiple modules at once.
 
@@ -1051,15 +1020,14 @@ ___
 
 ### Usage Example
 
-```
+```lua
 local A,B,C = Code.Require(ModuleA,ModuleB,ModuleC)
 ```
 
 ___
 </details>
 
-<details>
-    <summary><h3>Make</h3></summary>
+<details><summary>Make</summary>
 
 **Description:** Quickly make multiple of the same thing.
 
@@ -1091,8 +1059,7 @@ print(T1==T2) --false
 ___
 </details>
 
-<details>
-    <summary><h3>Plugin_Settings</h3></summary>
+<details><summary>Plugin_Settings</summary>
 
 **Description:** Fetches plugin settings. For Plugins only.
 
@@ -1111,7 +1078,7 @@ The Setting table must be set up as:
 
 ### Usage Example
 
-```
+```lua
 local SettingA,SettingB = Code.Plugin_Settings(plugin,{"Color",Color3.new(1,1,1)},{"Word","Hello!"})
 -- If either SettingA or B did not exist, the setting for their 1st value in the table, it would be set to the 2nd value in the pair.
 ```
@@ -1119,8 +1086,7 @@ local SettingA,SettingB = Code.Plugin_Settings(plugin,{"Color",Color3.new(1,1,1)
 ___
 </details>
 
-<details>
-    <summary><h3>Plugin_Widget</h3></summary>
+<details><summary>Plugin_Widget</summary>
 
 **Description:** A simplified method of making a plugin widget. For Plugins only.
 
@@ -1142,7 +1108,7 @@ ___
 
 ### Usage Example
 
-```
+```lua
 local Widget = Code.Plugin_Widget(plugin,"TestWidget","Test Widget"){"Float",true,false,200,300,150,150}
 -- Creating a basic test widget with basically the default values in place.
 ```
@@ -1150,8 +1116,7 @@ local Widget = Code.Plugin_Widget(plugin,"TestWidget","Test Widget"){"Float",tru
 ___
 </details>
 
-<details>
-    <summary><h3>SetAttributes</h3></summary>
+<details><summary>SetAttributes</summary>
 
 **Aliases:** SetAtt, SetAtts
 
@@ -1167,7 +1132,7 @@ ___
 
 ### Usage Example
 
-```
+```lua
 local Part = workspace.Brick
 Code.SetAttributes(Part,{TestString="String!",TestNumber=5,TestBoolean=false})
 ```
@@ -1175,8 +1140,7 @@ Code.SetAttributes(Part,{TestString="String!",TestNumber=5,TestBoolean=false})
 ___
 </details>
 
-<details>
-    <summary><h3>GetAttributes</h3></summary>
+<details><summary>GetAttributes</summary>
 
 **Aliases:** GetAtt, GetAtts
 
@@ -1227,8 +1191,7 @@ local A,B = Code.GetAttributes(Part,false,{"TestNumber",5},"TestString")
 ___
 </details>
 
-<details>
-    <summary><h3>ClearAttributes</h3></summary>
+<details><summary>ClearAttributes</summary>
 
 **Aliases:** ClearAtt, ClearAtts, NoAtt
 
@@ -1257,20 +1220,17 @@ Code.SetAttributes(Part,{TestString="String!",TestNumber=5,TestBoolean=false})
 wait(5)
 Code.ClearAttributes(Part) --in this case, none remains
 ```
-
-___
-</details>
-___
 </details>
 
 #
 
-<details>
-    <summary><h3>Special Inputs List </h3></summary>
+</details>
+
+<details><summary><h3>Special Inputs List</h3></summary>
 
 This list is specifically for the functions where changing the properties of an Instance is possible.
 
-### [On Changing Values](#A_Specials1)
+### On Changing Values
 
 | Name | Type | Effects | Description | Example |
 | --- | --- | --- | --- | --- |
@@ -1285,14 +1245,14 @@ This list is specifically for the functions where changing the properties of an 
 | "sqrt" | Value | Numbers | Returns the square root of the number being changed. | {Value = "sqrt"} |
 | "negate" | Value | Numbers | Basically inverts the number from negative/positive to the other. | {Value = "negate"} |
 | "not" | Value | Booleans | Returns the opposite boolean value. | {Value = "not"} |
-| Function | Value | Any | Inputs a function to return a value of your choosing. The first/only value of the function is always the Instance being changed. | See [Expanded Examples](#A_ExpandedSpecials1) for this instance. |
+| Function | Value | Any | Inputs a function to return a value of your choosing. The first/only value of the function is always the Instance being changed. | See [Expanded Examples](#expanded-examples) for this instance. |
 | "~X,Y,Z" | Value | Vector3 | Changes the Vector3 relative to its current value. The **X**, **Y**, and **Z** variables are the X,Y, and Z of the Vector3 Value. No spaces should be present in here. | {Position = "~0,5,0"} |
 | **"~#,#,#"** | Value | CFrame | Translates as ToWorldSpace(CFrame). | {CFrame = "~0,0,-5"} |
 | **"@#,#,#"** | Value | CFrame | Translates as CFrame*CFrame.fromEulerAnglesXYZ(#,#,#). Automatically converted to math.rad(#). | {CFrame = "@90,0,45"} |
 | **"<#,#,#,#,#,#"** | Value | CFrame | Basically acts as the **~** and then applies the **@** changes. First three #'s affect the movement and the other three affect the rotation. | {CFrame = "<0,5,0,0,45,0"} |
 | **">#,#,#,#,#,#"** | Value | CFrame | Basically acts as the **@** and then applies the **~** changes. First three #'s affect the movement and the other three affect the rotation. | {CFrame = ">0,5,0,0,45,0"} |
 
-### [Expanded Examples](#A_ExpandedSpecials1)
+### Expanded Examples
 
 ```lua
 --Function
@@ -1304,12 +1264,12 @@ end
 Code.Change(PartTable){CFrame = Func}
 ```
 
-### [On Searching Values](#A_Specials2)
+### On Searching Values
 
 | Name | Type | Effects | Description | Example |
 | --- | --- | --- | --- | --- |
 | IsA | Property Name | Instances | Works just like **Part:IsA("BasePart"). | {IsA = "BasePart"} |
-| IsPartOf | Property Name | Instances | Works with this module's **IsPartOf** function, though requires a slightly different setup. | See [Expanded Examples](#A_ExpandedSpecials2) for this instance. |
+| IsPartOf | Property Name | Instances | Works with this module's **IsPartOf** function, though requires a slightly different setup. | See [Expanded Examples](#expanded-examples-1) for this instance. |
 | Attribute | Property Name | Instances | Looks for 1 attribute to match to. | {Attribute = {"Attribute Name", DesiredValue} |
 | ">#" | Value | Numbers | Detects anything greater than the **#** in its place. | {Transparency = ">0.5"} |
 | ">=#" | Value | Numbers | Detects anything greater or equal to the **#** in its place. | {Transparency = ">=0.5"} |
@@ -1327,7 +1287,7 @@ Code.Change(PartTable){CFrame = Func}
 | "...Name" | Value | BrickColor | Checks if the name of the **BrickColor** ends with your input. | {BrickColor = "...red"} |
 | {Value,Value... etc} | Value | Any | You can now set each property to equal a table of values. Basically: If property equals this, or this, or this… etc. | {Transparency = {0, 0.5, 1}} |
 
-### [Expanded Examples](#A_ExpandedSpecials2)
+### Expanded Examples
 
 ```lua
 --IsPartOf 
