@@ -1,21 +1,30 @@
 # ShadokuSan's Roblox Library
+
 Testing things
 
-This is a module script that makes some common tasks, or tedious ones, easier than before.
+This is a module script that makes some common tasks, or tedious ones, easier than before
 -
+
 ### :warning: **This is not intended to be used as a learning tool for coding, and nor do I claim to be an expert in coding. So.. take the quality and readability of this module with a little grain of salt.**
-**Module Link:** https://www.roblox.com/library/3165359492/redirect
+
+**Module Link:** <https://www.roblox.com/library/3165359492/redirect>
 ___
+
 ### **Usage**
+
 Simply use **require(3165359492)** or insert the module manually to use it (but don't forget that requiring a ModuleScript via an ID doesn't work in LocalScripts).
 
 For the sake of the examples in the functions list below, let's assume **Code** is the variable used:
-```
+
+```lua
 local Code = require(3165359492)
 ```
+
 ___
 
-[details="Variables List"]
+<details>
+    <summary><h3>Variables List</h3></summary>
+
 | Variable | Description |
 | --- | --- |
 | Script | Refers to the module's instance itself. |
@@ -25,9 +34,11 @@ ___
 | Formulas | This is a table that hosts multiple semi-commonly used formulas, put into function form. See [Formulas](#A_Formulas) for more information. |
 
 ### <a name="A_Mod">Mods</a>
+
 Returns a dictionary of all module scripts you insert under this module. For example, if you have a module named "SliderHandler" then you can reference it such as: `Code.Mods["SliderHandler]`; the name of the module itself is always used to be referenced.
 
 ### <a name="A_Formulas">Formulas</a>
+
 This is a table that hosts multiple semi-commonly used formulas, put into function form. Followed by, `Code.Formulas.NameHere`
 
 | Forumla Name | Format | Description |
@@ -37,14 +48,22 @@ This is a table that hosts multiple semi-commonly used formulas, put into functi
 | PythagoreanTheorem | PythagoreanTheorem(Number1: number, Number2: number) | Simply returns the result of √**Number1**<sup>2</sup> + **Number2**<sup>2</sup> |
 | PointOnRay | PointOnRay(Point1: Vector3, Point2: Vector3, ReferencePoint: Vector3) | Returns a position by making a ray/line between **Point1** and **Point2**, then uses the **ReferencePoint** to find the closest position from said line. |
 | Lerp | Lerp(Start: number, End: number, Alpha: number) | Returns the number between the **Start** and **End** based on the Alpha (between 0-1). |
-[/details]
+</details>
 
-[details="Functions List"]
+#
 
-[details="Create"]
+<details>
+    <summary><h3>Functions List</h3></summary>
+
+<details>
+    <summary><h3>Create</h3></summary>
+
 **Aliases:** new
+
 **Description:** Customized "Instance.new" function that allows you to edit multiple properties at once.
+
 **Setup:** `Code.new("InstanceName", Parent, ParentFirst){Properties}`
+
 **Returns:** The new Instance that was created.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -56,7 +75,8 @@ This is a table that hosts multiple semi-commonly used formulas, put into functi
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
 
 ### Usage Example
-```
+
+```lua
 --Simply make a new part that will be parented to the workspace.
 local Part = Code.new('Part',workspace){Name = "TestPart",Position = Vector3.new(0,5,6),Anchored = true}
 
@@ -66,12 +86,17 @@ local Part = Code.new('Part',workspace,true){Name = "TestPart",Position = Vector
 --Special Input: Same | We'll make this part have the reflectance and transparency property set to 0.5
 local Part = Code.new("Part",workspace){Name = "TestPart",Same={0.5,"Transparency","Reflectance"}}
 ```
-___
-[/details]
 
-[details="Change"]
+___
+</details>
+
+<details>
+    <summary><h3>Change</h3></summary>
+
 **Description:** Change multiple properties of 1 or more Instances at once.
+
 **Setup:** `Code.Change(Instances...){Properties}`
+
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -80,9 +105,9 @@ ___
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
 
-
 ### Usage Example
-```
+
+```lua
 --Example 1:
 Code.Change(Part){Color = Color3.new(1,5,2),CanCollide = false}
 --Example 2:
@@ -114,13 +139,19 @@ end
 Code.Change(PartTable){CFrame = Func}
     --Moves each part in your PartTable 5 studs up independently of each other and their rotation.
 ```
-___
-[/details]
 
-[details="ChangeSame"]
-**Aliases:** Change2 
+___
+</details>
+
+<details>
+    <summary><h3>ChangeSame</h3></summary>
+
+**Aliases:** Change2
+
 **Description:** Change multiple properties of 1 or more Instances to the same value (if possible).
+
 **Setup:** `Code.ChangeSame(Value, Instances...){Properties}`
+
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -129,19 +160,26 @@ ___
 | Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you're editing. |
 
 ### Usage Example
-```
+
+```lua
 --Example 1:
 Code.ChangeSame(true,Part){"Massless","CanCollide"}
 --Example 2:
 Code.ChangeSame(true,Part1,Part2,Union1){"Massless","CanCollide"}
 ```
-___
-[/details]
 
-[details="Clone"]
+___
+</details>
+
+<details>
+    <summary><h3>Clone</h3></summary>
+
 **Aliases:** Copy
+
 **Description:** Clone an item and edit its properties at the same time.
+
 **Setup:** `Code.Clone(Item, SameParent, ParentFirst){Properties}`
+
 **Returns:** The clone of the instance.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -152,9 +190,9 @@ ___
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
 
-
 ### Usage Example
-```
+
+```lua
 --Example 1: 
 local Brick = Code.Clone(workspace.Brick,true){Name = "Cloned",Position = Vector3.new(0,10,0)}
 --Example 2:
@@ -162,12 +200,17 @@ local Brick = Code.Clone(workspace.Brick){Name = "Cloned",Position = Vector3.new
 --Special Input: Same | We'll make this part be unanchored and noncollidable
 local Brick = Code.Clone(workspace.Brick){Name = "Cloned",Same = {false,"Anchored","CanCollide"}}
 ```
-___
-[/details]
 
-[details="Replace"]
+___
+</details>
+
+<details>
+    <summary><h3>Replace</h3></summary>
+
 **Description:** Replace an Instance by creating a new one or cloning another in its place.
+
 **Setup:** `Code.Replace(Replacee, Replacement, SameParent, ParentFirst){Properties}`
+
 **Returns:** The replacement instance.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -179,9 +222,9 @@ ___
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
 
-
 ### Usage Example
-```
+
+```lua
 --Example 1: 
 local Brick = Code.Replace(workspace.Brick1,workspace.Brick2,true){Name = "Brick3"}
     --Destroys Brick1, clones Brick2 and names it Brick3. Variable Brick becomes Brick3. Brick3 gets parented to the same parent as Brick1.
@@ -189,12 +232,17 @@ local Brick = Code.Replace(workspace.Brick1,workspace.Brick2,true){Name = "Brick
 local Brick = Code.Replace(workspace.Brick1,"Part"){Name = "Brick2",CFrame = workspace.Brick1.CFrame}
     --Destroys Brick1, makes a new part that gets named Brick2, and makes the CFrame the same.
 ```
-___
-[/details]
 
-[details="Call"]
+___
+</details>
+
+<details>
+    <summary><h3>Call</h3></summary>
+
 **Description:** Call multiple functions on a single instance at roughly the same time.
+
 **Setup:** `Code.Call(Instance, Functions)`
+
 **Returns:** All of the potential returns the functions may have given.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -202,37 +250,51 @@ ___
 | Functions | table | {} | A list of functions and their accompanying parameters. |
 
 ### Usage Example
+
 ```
 local Part1,Part2 = workspace.Part1,workspace.Part2
 local Result,FullName = Code.Call(Part1,{CanCollideWith = {Part2},GetFullName = true})
 --Result will be a boolean telling us if the 2 parts are able to interact with each other.
 --FullName will fetch the full name of said part.
 ```
-___
-[/details]
 
-[details="Destroy"]
+___
+</details>
+
+<details>
+    <summary><h3>Destroy</h3></summary>
+
 **Aliases:** Null, Nullify
+
 **Description:** Destroys a bunch of Instances at once.
+
 **Setup:** `Code.Destroy(Instances...)`
+
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instances | Instance / {Instance...} | nil | The Instance(s) that you're deleting. |
 
 ### Usage Example
+
 ```
 Code.Destroy(workspace.Brick1,workspace.Brick2,workspace.Brick3)
 ```
+
 **Note:** Even if the item for some reason doesn't exist, it will not error and not stop the script it's used in.
 ___
-[/details]
+</details>
 
-[details="Find"]
+<details>
+    <summary><h3>Find</h3></summary>
+
 **Aliases:** Search
+
 **Description:** Advanced Instance searcher.
+
 **Setup:** `Code.Find(Instance, ReturnFirst, CheckDescendants, MaxAmount, FrameSpeed, IgnoreList){Properties}`
-**Returns:** 
+
+**Returns:**
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instance | Instance | nil | Where to look. |
@@ -246,7 +308,8 @@ ___
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#A_Specials2) section for details on how to use them.
 
 ### Usage Example
-```
+
+```lua
 --Example 1:
 local Get = Code.Find(workspace.Model,false,true){Name="Brick","Anchored"=true}
 --Example 2:
@@ -275,18 +338,23 @@ local Get = Code.Find(workspace,true,true){IsA="BasePart",IsPartOf={{"Folder",1}
     --returns the first BasePart it finds that is also the direct child of a Folder Instance.
     --Check the IsPartOf function of this module to see the general set-up.
 --Special Inputs 6:
-local Get = Code.Find(workspace.true,false){IsA="BasePart",["Position.X"]="<10"}
+local Get = Code.Find(workspace.true,false){IsA="BasePart",["Position.X">="<10"}
     --returns all parts in the workspace with a position of X that is less than 10
 --Special Inputs 7:
 local Get = Code.Find(workspace.true,false){IsA="BasePart",Attribute={"Test",5}}
     --returns all parts in the workspace that has an attribute named "Test" that are also equal to 5
 ```
-___
-[/details]
 
-[details="FindChange"]
+___
+</details>
+
+<details>
+    <summary><h3>FindChange</h3></summary>
+
 **Description:** Combination of the Find and Change functions.
+
 **Setup:** `Code.FindChange(Instance, ReturnFirst, CheckDescendants, MaxAmount, FrameSpeed, IgnoreList){HasProperties}{ChangeProperties}`
+
 **Returns:** The Instances that were found and changed, or false if not.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -302,17 +370,23 @@ ___
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) and [On Finding Values](#A_Specials2) sections for details on how to use them.
 
 ### Usage Example
+
 ```
-local Get = Code.FindChange(workspace,true,false){["Position.X"] = "<=-0.5"}{Material=Enum.Material.Neon}
+local Get = Code.FindChange(workspace,true,false){["Position.X"> = "<=-0.5"}{Material=Enum.Material.Neon}
 print("Got:",Get)
 --Will find parts that have a position value of X that is less than or equal to -0.5, then changes all of their materials to neon. Then returns a list of the changed parts.
 ```
-___
-[/details]
 
-[details="FindDestroy"]
+___
+</details>
+
+<details>
+    <summary><h3>FindDestroy</h3></summary>
+
 **Description:** Combination of the Find and Destroy functions.
+
 **Setup:** `Code.FindDestroy(Instance, CheckDescendants, MaxAmount, FrameSpeed, IgnoreList){HasProperties}`
+
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -326,17 +400,23 @@ ___
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#A_Specials2) section for details on how to use them.
 
 ### Usage Example
+
 ```
-Code.FindDestroy(workspace,false,5){["Position.X"] = "<1"}
+Code.FindDestroy(workspace,false,5){["Position.X"> = "<1"}
 --Will find the first 5 parts that have a position value of X that is less than 1, then destroys them.
 ```
-___
-[/details]
 
-[details=FindAllChildren]
+___
+</details>
+
+<details>
+    <summary><h3>FindAllChildren</h3></summary>
 **Aliases:** FindAll, FAC
+
 **Description:** Acts like Instance:FindFirstChild() where you can search for multiple instances.
+
 **Setup:** `Code.FindAllChildren(Instance, Recursive, Items...)`
+
 **Returns:** The Instances that were found, or false if not.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -345,7 +425,8 @@ ___
 | Items | string | nil | A bunch of strings (for names) you'd like to search for. |
 
 ### Usage Example
-```
+
+```lua
 --Example 1:
 local PartA,PartB,PartC = Code.FindAllChildren(workspace,false,"PartA","PartB","PartC")
 --Will return either the Instances that has those names or false if not.
@@ -359,12 +440,17 @@ local Mesh,Texture = Code.FindAllChildren(workspace,false,"PartA.Mesh","PartB.Te
 local PartA,PartB,PartC = Code.FindAllChildren(workspace,true,"PartA","PartB","PartC")
 --Will return the instances if they exist anywhere in the game under workspace.
 ```
-___
-[/details]
 
-[details="IsPartOf"]
+___
+</details>
+
+<details>
+    <summary><h3>IsPartOf</h3></summary>
+
 **Description:** Checks if an Instance is a descendant of another Instance or of a certain type of Instance.
+
 **Setup:** `Code.IsPartOf(Instance, Tuple, MaxReturn)`
+
 **Returns:** The Instance that was found, or `nil` if it managed to hit **game** before finding anything or couldn't be found within the max amount of parents requested by the Number value.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -373,7 +459,8 @@ ___
 | MaxReturn | number | :infinity: | The amount of parents it will check. |
 
 ### Usage Example
-```
+
+```lua
 --Let's assume you set the Part variable already.
 local PartInFolder = Code.IsPartOf(Part,"Folder")
 --Will return either the Folder Instance we're looking for if it exists or nil if it doesn't.
@@ -381,12 +468,17 @@ local PartInFolder = Code.IsPartOf(Part,"Folder")
 local Partception = Code.IsPartOf(Part1,Part2,2)
 --Will return the 2nd part if Part1 is no more than 2 descendants down, otherwise nil.
 ```
-___
-[/details]
 
-[details="GetPartOf"]
+___
+</details>
+
+<details>
+    <summary><h3>GetPartOf</h3></summary>
+
 **Description:** Fetches a property from an array of instances.
+
 **Setup:** `Code.GetPartOf(Instances, Property)`
+
 **Returns:** A table of the given property.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -394,7 +486,8 @@ ___
 | Property | string | nil | The property you want returned. Can also be set to return a secondary value if one exists (like Vector3 with X,Y or Z). |
 
 ### Usage Example
-```
+
+```lua
 --Example 1: Let's assume Parts is a folder under the workspace holding some bricks.
 local Transparencies = Code.GetPartOf(Parts:GetChildren(),"Transparency")
 print(unpack(Transparencies))
@@ -403,13 +496,19 @@ print(unpack(Transparencies))
 local Y = Code.GetPartOf(Parts:GetChildren(),"Position.Y")
 print(unpack(Y))
 ```
-___
-[/details]
 
-[details="WaitForPath"]
+___
+</details>
+
+<details>
+    <summary><h3>WaitForPath</h3></summary>
+
 **Aliases:** WaitForDescendants, WFP
+
 **Description:** [A solution to checking in long paths without needing the overuse of :WaitForChild a dozen times.](https://devforum.roblox.com/t/554586)
+
 **Setup:** `Code.WaitForPath(Instance, MaxWaitTime, Path)`
+
 **Returns:** The Instance(s) you're looking for, or false if you exceed the maximum wait time and found nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -421,7 +520,8 @@ ___
 If before the name of the variable an ```*asterisk``` is placed anywhere in the sequence, that found instance will also be returned.
 
 ### Usage Example
-```
+
+```lua
 --Let's assume that this is a LocalScript for some UI.
 local UI = script.Parent
 local Button = Code.WaitForPath(UI,20,"MainFrame.Something.SomethingElse.Button1")
@@ -431,13 +531,19 @@ local Button = Code.WaitForPath(UI,20,"MainFrame.Something.SomethingElse.Button1
 local MainFrame,Button = Code.WaitForPath(UI,20,"*MainFrame.Something.SomethingElse.Button1")
 --The asterisk before the name tells the function to also save that instance.
 ```
-___
-[/details]
 
-[details="WaitForChildren"]
+___
+</details>
+
+<details>
+    <summary><h3>WaitForChildren</h3></summary>
+
 **Aliases:** WFC
+
 **Description:** Allows you to call :WaitForChild() on multiple Instances under the same parent at the same time.
+
 **Setup:** `Code.WaitForChildren(Instance, MaxWait, Items...)`
+
 **Returns:** The Instance(s) you're looking for. Will return false for each Instance that fails to be found within the time you set.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -449,7 +555,8 @@ ___
 If before the name of the variable an ```*asterisk``` is placed anywhere in the sequence, that found instance will also be returned.
 
 ### Usage Example
-```
+
+```lua
 ----Example 1
 --Let's assume that this is a LocalScript for some UI.
 local UI = script.Parent
@@ -465,12 +572,17 @@ local TextureA,TextureB = Code.WFC(workspace,10,"Brick1.Decal","Brick2.Texture")
 local Brick1,TextureA,TextureB = Code.WFC(workspace,10,"*Brick1.Decal","Brick2.Texture")
     --Will return the first brick, then the decal/texture found, or false if not there.
 ```
-___
-[/details]
 
-[details="Fetch"]
+___
+</details>
+
+<details>
+    <summary><h3>Fetch</h3></summary>
+
 **Description:** Fetches multiple properties/values from an instance/table.
+
 **Setup:** `Code.Fetch(Input, Variables...)`
+
 **Returns:** The variable(s) you're looking for. If the variable cannot be found or is equal to `nil` then it will be overlooked.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -483,7 +595,8 @@ If a property is followed by ` > ` then it will search inside this property inst
 If after a `>` there are any commas, these will be taken into consideration separately.
 
 ### Usage Example
-```
+
+```lua
 ----Example 1
 local Color,Size = Code.Fetch(workspace.Baseplate,"Color","Size")
     --Can be followed by as many variables as necessary as long as the input actually has these things.
@@ -492,68 +605,93 @@ local Color,Size = Code.Fetch(workspace.Baseplate,"Color","Size")
 local Color,SizeX,SizeY,SizeZ = Code.Fetch(workspace.Baseplate,"Color","Size > X,Y,Z")
     --Will return each size axis after getting the part's color.
 ```
-___
-[/details]
 
-[details="PositiveNegative"]
+___
+</details>
+
+<details>
+    <summary><h3>PositiveNegative</h3></summary>
+
 **Aliases:** PN
+
 **Description:** Returns a 50/50 chance for a number being positive or negative.
+
 **Setup:** `Code.PN(Number)`
+
 **Returns:** The number generated, or ±1 if no number was set.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Number | number | 1 | The number that's being randomized. |
 
 ### Usage Example
-```
---Example 1:
-local Number = Code.PN(5)			--Returns either 5 or -5
---Example 2:
-local Number = Code.PN()			--Returns either 1 or -1
-```
-___
-[/details]
 
-[details="Random"]
+```lua
+--Example 1:
+local Number = Code.PN(5)   --Returns either 5 or -5
+--Example 2:
+local Number = Code.PN()   --Returns either 1 or -1
+```
+
+___
+</details>
+
+<details>
+    <summary><h3>Random</h3></summary>
+
 **Aliases:** Rando
+
 **Description:** Selects at random whatever you put in the list.
+
 **Setup:** `Code.Rando(Items...)`
+
 **Returns:** One of the items you put in the list at random.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Items | Any | nil | The items you wish to input. Can be anything, really. |
 
 ### Usage Example
-```
+
+```lua
 --Example 1:
 local Number = Code.Rando(1,10,30,-6,1000)
 --Example 2:
 local Chosen = Code.Rando("Hello, world!",96,workspace.Brick)
 ```
-___
-[/details]
 
-[details="Service"]
+___
+</details>
+
+<details>
+    <summary><h3>Service</h3></summary>
+
 **Description:** Fetches one or more services.
+
 **Setup:** `Code.Service(Service...)`
+
 **Returns:** The service(s) that you requested.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Service | string | nil | The service(s) in which you'd like to fetch. |
 
 ### Usage Example
-```
+
+```lua
 --Example 1:
 local TS = Code.Service'TweenService'
 --Example 2:
 local TS,RS,SSS = Code.Service('TweenService','RunService','ServerScriptService')
 ```
-___
-[/details]
 
-[details="Tween"]
+___
+</details>
+
+<details>
+    <summary><h3>Tween</h3></summary>
+
 **Description:** A simplified method of making a tween.
+
 **Setup:** `Code.Tween(Instance){Time, Style, Direction, Repeat, Reverses, Delay}{Properties}`
+
 **Returns:** The Tween you've created.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -569,16 +707,22 @@ ___
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
 
 ### Usage Example
+
 ```
 local Tween = Code.Tween(script.Parent){1,"Bounce","Out",1,true,0.5}{Position=script.Parent.Position+Vector3.new(0,3,0)}
 Tween:Play()
 ```
-___
-[/details]
 
-[details="Tweens"]
+___
+</details>
+
+<details>
+    <summary><h3>Tweens</h3></summary>
+
 **Description:** A method for making multiple tweens of the same or similar items.
+
 **Setup:** `Code.Tweens(Instances...){Time, Style, Direction, Repeat, Reverses, Delay}{Properties}`
+
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -594,18 +738,25 @@ ___
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#A_Specials1) section for details on how to use them.
 
 ### Usage Example
+
 ```
 local Part1,Part2 = workspace.Part1,workspace.Part2
 Code.Tweens(Part1,Part2){1,"Bounce","Out",1,true,0.5}{Position=Vector3.new(0,5,0)}
 ```
+
 **Note:** This auto-plays all of the tweens made. I intended it to return each tween individually similarly to the Service function, but something ROBLOX-side seems to be preventing this from working as of this update.
 ___
-[/details]
+</details>
 
-[details="⚠ TweenSequence"]
+<details>
+    <summary><h3>⚠ TweenSequence</h3></summary>
+
 :warning: This is experimental, and may cause poor performance if used too sparingly!
+
 **Description:** An experimental method to tween what was previously untweenable.
+
 **Setup:** `Code.TweenSequence(Instances...){Time, Style, Direction, Repeat, Reverses, Delay}{Properties}`
+
 **Returns:** A special tween-base made via metatables. Should be able to work just like a normal Tween with the same functions and variables. This includes a new function: **Tween:Destroy()** since this works in a specific way, if you want to clean up a bit, I recommend you use this when not needed anymore.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -619,24 +770,28 @@ ___
 | Properties | table | {} | The properties that are being changed by the tween. In this case, restricted. |
 
 ## **What can be tweened currently**
+
 ### ColorSequence
+
 If the start and end sequences have differing number keypoints, 2 new sequences will be created with some "ghost keypoints" in the middle to still generally reflect what the start and end should look like. Then, when tweening, each color's keypoint is lerped over each other to give a fading effect.
 
 If the number of keypoints remains the same and the start of the property name has a tilde (**~**), then it will attempt to also tween the time position of the keypoints between the start and end points, giving a sliding effect on top of the color changing effect.
 
 ### NumberSequence
+
 Works largely similar to ColorSequence, but instead with colors it deals in numbers and envelopes. The tilde rule also applies here.
 
 ### Usage Example
-```
+
+```lua
 ----Example 1
 local Beam = workspace.Part1.Beam
 local ChangeTo = ColorSequence.new{
-	ColorSequenceKeypoint.new(0,Color3.fromRGB(0, 0, 0)),
-	ColorSequenceKeypoint.new(0.25,Color3.fromRGB(255, 0, 0)),
-	ColorSequenceKeypoint.new(0.5,Color3.fromRGB(0, 255, 0)),
-	ColorSequenceKeypoint.new(0.75,Color3.fromRGB(0, 0, 255)),
-	ColorSequenceKeypoint.new(1,Color3.fromRGB(0, 0, 0))}
+ ColorSequenceKeypoint.new(0,Color3.fromRGB(0, 0, 0)),
+ ColorSequenceKeypoint.new(0.25,Color3.fromRGB(255, 0, 0)),
+ ColorSequenceKeypoint.new(0.5,Color3.fromRGB(0, 255, 0)),
+ ColorSequenceKeypoint.new(0.75,Color3.fromRGB(0, 0, 255)),
+ ColorSequenceKeypoint.new(1,Color3.fromRGB(0, 0, 0))}
 
 local Tween = Code.TweenSequence(Beam){1,"Linear","InOut",2,true,0.5}{Color = ChangeTo}
 Tween:Play()
@@ -645,29 +800,35 @@ Tween:Play()
 ----Example 2
 local ParticleEmitter = workspace.Part5.ParticleEmitter
 local ChangeTo = NumberSequence.new{
-	NumberSequenceKeypoint.new(0,1),
-	NumberSequenceKeypoint.new(0.349,3.39,1.58),
-	NumberSequenceKeypoint.new(1,1)}
+ NumberSequenceKeypoint.new(0,1),
+ NumberSequenceKeypoint.new(0.349,3.39,1.58),
+ NumberSequenceKeypoint.new(1,1)}
 
-local Tween = Code.TweenSequence(ParticleEmitter){1,"Linear","InOut",2,true,0.5}{["~Size"] = ChangeTo}
+local Tween = Code.TweenSequence(ParticleEmitter){1,"Linear","InOut",2,true,0.5}{["~Size"> = ChangeTo}
 Tween:Play()
 Tween.Completed:Wait()
 print("Demo finished!")
 --Should tween a particle emitter's size, sliding the values if the initial NumberSequence is also 3 keypoints.
 ```
-___
-[/details]
 
-[details="Tabs"]
+___
+</details>
+
+<details>
+    <summary><h3>Tabs</h3></summary>
+
 **Description:** Combines Tables or otherwise into 1 table.
+
 **Setup:** `Code.Tabs(Any)`
+
 **Returns:** The new table with everything inside.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Any | Any | {} | An array of anything you want to combine. Tables, Strings, Instances, etc. |
 
 ### Usage Example
-```
+
+```lua
 --Example 1:
 local Tab1,Tab2 = {1,3,5},{2,4,6}
 local Tab3 = Code.Tabs(Tab1,Tab2)
@@ -678,29 +839,40 @@ local Tab = {1,2,3,4}
 local Tab2 = Code.Tabs("Hi",false,workspace,Tab,"Test")
 print(unpack(Tab2)) --Hi false Workspace 1 2 3 4 Test
 ```
-___
-[/details]
 
-[details="TabClone"]
+___
+</details>
+
+<details>
+    <summary><h3>TabClone</h3></summary>
+
 **Description:** Clones a table.
+
 **Setup:** `Code.TabClone(Table)`
+
 **Returns:** The new cloned table.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Table | table | nil | The table you want to clone. |
 
 ### Usage Example
+
 ```
 local Tab1 = {1,2,3,"a","b","c"}
 local Tab2 = Code.TabClone(Tab1)
 print(Tab1==Tab2) --false
 ```
-___
-[/details]
 
-[details="MassConnect"]
+___
+</details>
+
+<details>
+    <summary><h3>MassConnect</h3></summary>
+
 **Description:** A quick method for connecting multiple events and instances simultaneously.
+
 **Setup:** `Code.MassConnect(Instances, Events, Function)`
+
 **Returns:** An array of every new connection made.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -711,6 +883,7 @@ ___
 **Note:**
 Function will always use 2 variables at the start: The Instance connected, and a string of the Event connected. After that, every variable that would be ordinarily returned via the event.
 Format it as so:
+
 ```
 function TestFunction(Instance,Event,...)
 --Instance being the instance.
@@ -722,7 +895,8 @@ end
 ```
 
 ### Usage Example
-```
+
+```lua
 --Let's assume this is a normal script, and Parts is a folder in the workspace that contains a few blocks.
 function Reader(Part,Event,...)
     if Event=="Changed" then
@@ -734,22 +908,28 @@ end
 
 Code.MassConnect(Parts:GetChildren(),{"Touched","Changed"},Reader)
 ```
-___
-[/details]
 
-[details="MassDisconnect"]
+___
+</details>
+
+<details>
+    <summary><h3>MassDisconnect</h3></summary>
+
 **Description:** Disconnects a bunch of connections.
+
 **Setup:** `Code.MassDisconnect(Connections)`
+
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Connections | table | {} | An array of Connections that you'd like to sever. |
 
 **Note:**
-:warning: It's best to use this after using **MassConnect** when you don't need the connections any more. 
+:warning: It's best to use this after using **MassConnect** when you don't need the connections any more.
 
 ### Usage Example
-```
+
+```lua
 --Let's assume this is a normal script, and Parts is a folder in the workspace that contains a few blocks.
 function Reader(Part,Event,...)
     if Event=="Changed" then
@@ -766,12 +946,17 @@ task.wait(10)
 Connections = Code.MassDisconnect(Connections)
 --Every connection will be gone, and so is the reference to them.
 ```
-___
-[/details]
 
-[details="Match"]
+___
+</details>
+
+<details>
+    <summary><h3>Match</h3></summary>
+
 **Description:** A simple replacement for using multiple "or" statements on the same variable.
+
 **Setup:** `Code.Match(Main, Variables...)`
+
 **Returns:** A boolean value; true if the Main variable matches any of the subsequent variables or false if not.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -779,7 +964,8 @@ ___
 | Variables | Any | nil | The variables you'd like to compare it to. |
 
 ### Usage Example
-```
+
+```lua
 --Let's assume Part is the variable set to a part under the workspace.
 
 if Code.Match(Part.Transparency,0,0.5,1)  then
@@ -788,12 +974,17 @@ else
 --Otherwise...
 end
 ```
-___
-[/details]
 
-[details="AllMatch"]
+___
+</details>
+
+<details>
+    <summary><h3>AllMatch</h3></summary>
+
 **Description:** A simple replacement for checking if all variables must equal the same thing.
+
 **Setup:** `Code.AllMatch(MatchMe, Variables...)`
+
 **Returns:** A boolean value; true if the following variables all match the MatchMe variable or false if not.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -801,18 +992,24 @@ ___
 | Variables | Any | nil | The variables you'd like to compare it to. |
 
 ### Usage Example
+
 ```
 local Result = Code.AllMatch(1,2,3,1)
 --Result would be false since they all need to equal the first variable (1).
 local Result = Code.AllMatch(1,1,1,1)
 --Result would be true.
 ```
-___
-[/details]
 
-[details="WaitOn"]
+___
+</details>
+
+<details>
+    <summary><h3>WaitOn</h3></summary>
+
 **Description:** Can wait on multiple occasions, but will resume as soon as 1 of them is met.
+
 **Setup:** `Code.WaitOn(Variant...)`
+
 **Returns:** The method that prevailed (only really applicable for those who understand in the case of an event being returned).
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -826,7 +1023,8 @@ Variant can be presented as any of the following:
 ♦ Table {Name,Signal}: Name is a string that you'd want to be returned, and Signal is an event or function. Makes for easier identification.
 
 ### Usage Example
-```
+
+```lua
 --Let's assume Part is the variable set to a part under workspace, and we want to wait till it gets changed at all, but we don't want to wait more than 10 seconds for that to happen.
 Code.WaitOn(10,Part.Changed)
 --However, if we want to wait on a specific property (Transparency in this case)...
@@ -835,27 +1033,38 @@ Code.WaitOn(10,Part:GetPropertyChangedSignal("Transparency"))
 Code.WaitOn({"Part1",Part1.Part:GetPropertyChangedSignal("Transparency")},{"Part2",Part2.Part:GetPropertyChangedSignal("Transparency")})
     --returns the string "Part1" if Part1's transparency changes, or "Part2" if Part2's transparency changes.
 ```
-___
-[/details]
 
-[details="Require"]
+___
+</details>
+
+<details>
+    <summary><h3>Require</h3></summary>
+
 **Description:** Requires multiple modules at once.
+
 **Setup:** `Code.Require(Modules...)`
+
 **Returns:** The modules you wanted to fetch.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Modules | ModuleScript | nil | The module(s) you'd like to require. |
 
 ### Usage Example
+
 ```
 local A,B,C = Code.Require(ModuleA,ModuleB,ModuleC)
 ```
-___
-[/details]
 
-[details="Make"]
+___
+</details>
+
+<details>
+    <summary><h3>Make</h3></summary>
+
 **Description:** Quickly make multiple of the same thing.
+
 **Setup:** `Code.Make(Data, Amount, SameTable)`
+
 **Returns:** The data you've copied.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -864,7 +1073,8 @@ ___
 | SameTable | boolean | false | Only applicable if the Data is a table. Determines if the returned tables are all the same connected one or just copies. |
 
 ### Usage Example
-```
+
+```lua
 ----Example 1 (any data):
 local A,B,C = Code.Make("Test",3)
 print(A,B,C) --Test, Test, Test
@@ -877,12 +1087,17 @@ local Tab = {"A","b"}
 local T1,T2 = Code.Make(Tab,2)
 print(T1==T2) --false
 ```
-___
-[/details]
 
-[details="Plugin_Settings"]
+___
+</details>
+
+<details>
+    <summary><h3>Plugin_Settings</h3></summary>
+
 **Description:** Fetches plugin settings. For Plugins only.
+
 **Setup:** `Code.Plugin_Settings(Plugin, Setting...)`
+
 **Returns:** The setting(s) you wanted to fetch or their defaults if they didn't exist.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -895,16 +1110,22 @@ The Setting table must be set up as:
 ♦ **Default:** If the setting could not be found, this is what it will be defaulted to instead.
 
 ### Usage Example
+
 ```
 local SettingA,SettingB = Code.Plugin_Settings(plugin,{"Color",Color3.new(1,1,1)},{"Word","Hello!"})
 -- If either SettingA or B did not exist, the setting for their 1st value in the table, it would be set to the 2nd value in the pair.
 ```
-___
-[/details]
 
-[details="Plugin_Widget"]
+___
+</details>
+
+<details>
+    <summary><h3>Plugin_Widget</h3></summary>
+
 **Description:** A simplified method of making a plugin widget. For Plugins only.
+
 **Setup:** `Code.Plugin_Widget(Plugin, Identifier, DisplayName){InitialDockState, InitialEnabled, RestoreOverride, SizeX, SizeY, SizeMinimumX, SizeMinimumY}`
+
 **Returns:** The widget you've created.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -920,17 +1141,24 @@ ___
 | SizeMinimumY | number | 150 | Minimum heightof the widget window. |
 
 ### Usage Example
+
 ```
 local Widget = Code.Plugin_Widget(plugin,"TestWidget","Test Widget"){"Float",true,false,200,300,150,150}
 -- Creating a basic test widget with basically the default values in place.
 ```
-___
-[/details]
 
-[details="SetAttributes"]
+___
+</details>
+
+<details>
+    <summary><h3>SetAttributes</h3></summary>
+
 **Aliases:** SetAtt, SetAtts
+
 **Description:** Sets multiple attributes at once.
+
 **Setup:** `Code.SetAttributes(Instance, Table)`
+
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -938,17 +1166,24 @@ ___
 | Table | table | nil | A table listing the new attributes and their values. |
 
 ### Usage Example
+
 ```
 local Part = workspace.Brick
 Code.SetAttributes(Part,{TestString="String!",TestNumber=5,TestBoolean=false})
 ```
-___
-[/details]
 
-[details="GetAttributes"]
+___
+</details>
+
+<details>
+    <summary><h3>GetAttributes</h3></summary>
+
 **Aliases:** GetAtt, GetAtts
+
 **Description:** Gets multiple specific attributes at once (in order).
+
 **Setup:** `Code.GetAttributes(Instance, AutoMake, Attribute...)`
+
 **Returns:** The attribute's value or **false** if none exists.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -965,7 +1200,8 @@ Attribute's table is meant to be set up as follows: `{Name, Preset}`
 If you're using the table variant, if there is a found attribute that does not match the type/typeof the preset, then the preset will be used instead.
 
 ### Usage Example
-```
+
+```lua
 ----Example 1
 local Part = workspace.Brick
 Code.SetAttributes(Part,{TestString="String!",TestNumber=5,TestBoolean=true})
@@ -987,13 +1223,19 @@ local A,B = Code.GetAttributes(Part,false,{"TestNumber",5},"TestString")
 --A would be false if it doesn't already exist since the AutoMake variable was set to false
 --B would be false assuming one wasn't there
 ```
-___
-[/details]
 
-[details="ClearAttributes"]
+___
+</details>
+
+<details>
+    <summary><h3>ClearAttributes</h3></summary>
+
 **Aliases:** ClearAtt, ClearAtts, NoAtt
+
 **Description:** Clears multiple attributes at once.
+
 **Setup:** `Code.ClearAttributes(Instance, Attribute...)`
+
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -1001,7 +1243,8 @@ ___
 | Attribute | string / nil | nil |  |
 
 ### Usage Example
-```
+
+```lua
 ----Taking from the "SetAttributes" example above:
 --Clearing specific ones:
 local Part = workspace.Brick
@@ -1014,14 +1257,21 @@ Code.SetAttributes(Part,{TestString="String!",TestNumber=5,TestBoolean=false})
 wait(5)
 Code.ClearAttributes(Part) --in this case, none remains
 ```
+
 ___
-[/details]
+</details>
 ___
-[/details]
-[details="Special Inputs List "]
+</details>
+
+#
+
+<details>
+    <summary><h3>Special Inputs List </h3></summary>
+
 This list is specifically for the functions where changing the properties of an Instance is possible.
 
 ### [On Changing Values](#A_Specials1)
+
 | Name | Type | Effects | Description | Example |
 | --- | --- | --- | --- | --- |
 | Same# | Property Name | Any | Allows you to set multiple properties to the same value. Provide a table where the first entry is the value you want to be set, then each subsequent entry is a string that is the name of the property you want to change. As long as the **#** at the end is a different number, you can use this as many times as necessary. | {Same1 = {true, "Anchored", "CanCollide"}, Same2 = {false,"CastShadow", "Locked"}} |
@@ -1043,7 +1293,8 @@ This list is specifically for the functions where changing the properties of an 
 | **">#,#,#,#,#,#"** | Value | CFrame | Basically acts as the **@** and then applies the **~** changes. First three #'s affect the movement and the other three affect the rotation. | {CFrame = ">0,5,0,0,45,0"} |
 
 ### [Expanded Examples](#A_ExpandedSpecials1)
-```
+
+```lua
 --Function
 --Moves each part in your PartTable 5 studs up independently of each other and their rotation.
 function Func(Part)
@@ -1054,6 +1305,7 @@ Code.Change(PartTable){CFrame = Func}
 ```
 
 ### [On Searching Values](#A_Specials2)
+
 | Name | Type | Effects | Description | Example |
 | --- | --- | --- | --- | --- |
 | IsA | Property Name | Instances | Works just like **Part:IsA("BasePart"). | {IsA = "BasePart"} |
@@ -1076,21 +1328,25 @@ Code.Change(PartTable){CFrame = Func}
 | {Value,Value... etc} | Value | Any | You can now set each property to equal a table of values. Basically: If property equals this, or this, or this… etc. | {Transparency = {0, 0.5, 1}} |
 
 ### [Expanded Examples](#A_ExpandedSpecials2)
-```
+
+```lua
 --IsPartOf 
 --Returns the first BasePart it finds that is also the direct child of a Folder Instance.
 --Check the IsPartOf function of this module to see the general set-up.
 local Get = Code.Find(workspace,true,true){IsA="BasePart",IsPartOf={{"Folder",1}}}
 
 ```
-[/details]
+
+</details>
 
 ___
 If there is any misinformation with the functions on here, or you believe that something needs more clarification, please let me know.
 
 Also, feel free to comment if you have **ideas** for any new functions that I should add that you believe would be useful.
 ___
+
 ### **LATEST UPDATE:**
+
 [date=2023-01-09]
 
 • Addition of the **Replace** function. This replaces an instance in place for either creating a new instance or cloning another one.
