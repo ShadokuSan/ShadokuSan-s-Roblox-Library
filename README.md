@@ -1,27 +1,3 @@
-# ShadokuSan's Roblox Library
-
-Testing things
-
-This is a module script that makes some common tasks, or tedious ones, easier than before
--
-
-### :warning: **This is not intended to be used as a learning tool for coding, and nor do I claim to be an expert in coding. So.. take the quality and readability of this module with a little grain of salt.**
-
-**Module Link:** <https://www.roblox.com/library/3165359492/redirect>
-___
-
-### **Usage**
-
-Simply use **require(3165359492)** or insert the module manually to use it (but don't forget that requiring a ModuleScript via an ID doesn't work in LocalScripts).
-
-For the sake of the examples in the functions list below, let's assume **Code** is the variable used:
-
-```lua
-local Code = require(3165359492)
-```
-
-___
-
 <details><summary><h3>Variables List</h3></summary>
 
 | Variable | Description |
@@ -1298,17 +1274,3 @@ local Get = Code.Find(workspace,true,true){IsA="BasePart",IsPartOf={{"Folder",1}
 ```
 
 </details>
-
-___
-If there is any misinformation with the functions on here, or you believe that something needs more clarification, please let me know.
-
-Also, feel free to comment if you have **ideas** for any new functions that I should add that you believe would be useful.
-___
-
-### **LATEST UPDATE:**
-
-[date=2023-01-09]
-
-• Addition of the **Replace** function. This replaces an instance in place for either creating a new instance or cloning another one.
-• Addition of the **Formulas** variable. This is a table that holds a few semi-common formulas in function form.
-• Attempted to clean up this documentation page a bit.
