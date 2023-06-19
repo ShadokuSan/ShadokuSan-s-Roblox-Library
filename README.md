@@ -30,12 +30,7 @@ ___
 | Script | Refers to the module's instance itself. |
 | Warnings | Tied to the **Warnings** attribute to the module. This is used to give information in some scripts for potentially incorrect uses but is an instance that may be auto-corrected. |
 | ManualErrors | Tied to the **ManualErrors** attribute to the module. Normally, this will insert errors in areas where incorrect usage of the module likely cannot be auto-corrected and tries to send a message that will try to make some sense of what went wrong. |
-| Mods | Returns a dictionary of all module scripts you insert under this module. See [Mods](#mods) for more information.|
 | Formulas | This is a table that hosts multiple semi-commonly used formulas, put into function form. See [Formulas](#formulas) for more information. |
-
-### Mods
-
-Returns a dictionary of all module scripts you insert under this module. For example, if you have a module named "SliderHandler" then you can reference it such as: `Code.Mods["SliderHandler]`; the name of the module itself is always used to be referenced.
 
 ### Formulas
 
@@ -48,6 +43,7 @@ This is a table that hosts multiple semi-commonly used formulas, put into functi
 | PythagoreanTheorem | PythagoreanTheorem(Number1: number, Number2: number) | Simply returns the result of √**Number1**<sup>2</sup> + **Number2**<sup>2</sup> |
 | PointOnRay | PointOnRay(Point1: Vector3, Point2: Vector3, ReferencePoint: Vector3) | Returns a position by making a ray/line between **Point1** and **Point2**, then uses the **ReferencePoint** to find the closest position from said line. |
 | Lerp | Lerp(Start: number, End: number, Alpha: number) | Returns the number between the **Start** and **End** based on the Alpha (between 0-1). |
+| TimeConvert | TimeConvert(Seconds: number, TimeUnit: string<"Milliseconds", "Seconds", "Hours", "Days", "Weeks">) | Returns the conversion of seconds to another time unit. |
 
 #
 
@@ -330,7 +326,7 @@ local Get = Code.Find(workspace,true,true){IsA="BasePart",IsPartOf={{"Folder",1}
     --returns the first BasePart it finds that is also the direct child of a Folder Instance.
     --Check the IsPartOf function of this module to see the general set-up.
 --Special Inputs 6:
-local Get = Code.Find(workspace.true,false){IsA="BasePart",["Position.X">="<10"}
+local Get = Code.Find(workspace.true,false){IsA="BasePart",["Position.X"]>="<10"}
     --returns all parts in the workspace with a position of X that is less than 10
 --Special Inputs 7:
 local Get = Code.Find(workspace.true,false){IsA="BasePart",Attribute={"Test",5}}
@@ -363,7 +359,7 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 ### Usage Example
 
 ```lua
-local Get = Code.FindChange(workspace,true,false){["Position.X"> = "<=-0.5"}{Material=Enum.Material.Neon}
+local Get = Code.FindChange(workspace,true,false){["Position.X"]> = "<=-0.5"}{Material=Enum.Material.Neon}
 print("Got:",Get)
 --Will find parts that have a position value of X that is less than or equal to -0.5, then changes all of their materials to neon. Then returns a list of the changed parts.
 ```
@@ -392,7 +388,7 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 ### Usage Example
 
 ```lua
-Code.FindDestroy(workspace,false,5){["Position.X"> = "<1"}
+Code.FindDestroy(workspace,false,5){["Position.X"]> = "<1"}
 --Will find the first 5 parts that have a position value of X that is less than 1, then destroys them.
 ```
 
@@ -1055,6 +1051,94 @@ print(T1==T2) --true
 local Tab = {"A","b"}
 local T1,T2 = Code.Make(Tab,2)
 print(T1==T2) --false
+```
+
+___
+</details>
+
+<details><summary>TimeTable</summary>
+
+**Description:** Takes any number of seconds and returns a dictionary of all possible conversions from the formula **TimeConvert**.
+
+**Setup:** `Code.TimeTable(Seconds)`
+
+**Returns:** A dictionary of time conversions.
+| Variable | Type | Default | Description |
+| --- | --- | --- | --- |
+| Seconds | number | 0 | How many seconds you want to convert. |
+
+### Usage Example
+
+```lua
+--Converts 65 seconds into a table that returns 1 minute and 5 seconds.
+local Times = Code.TimeTable(65)
+print(Times)
+--[[Output: {
+    ["Days"] = 0,
+    ["Hours"] = 0,
+    ["Milliseconds"] = 0,
+    ["Minutes"] = 1,
+    ["Seconds"] = 5,
+    ["Weeks"] = 0
+    }]]
+```
+
+___
+</details>
+
+<details><summary>TimeFormat</summary>
+
+**Description:** Takes any number of seconds and converts that to a time format of your choosing.
+
+**Setup:** `Code.TimeFormat(Seconds, Format, Simple)`
+
+**Returns:** A string containing the newly formatted time.
+| Variable | Type | Default | Description |
+| --- | --- | --- | --- |
+| Seconds | number | 0 | How many seconds you want to convert and format. |
+| Format | string | **nil** | How the string should be presented. See below category for more details. |
+| Simple | boolean | true | If the conversion can be used without any words in the string. |
+
+### Format Guides
+The string for the **Format** variable looks for certain patterns to determine where to place the converted time units. This goes to Milliseconds, Seconds, Minutes, Hours (24 hour, not 12 hour time), Days, and Weeks. Months and onward are excluded for being too variable; not every month has a set amount of days or weeks. When using these patterns, keep in mind that these are case sensitive:
+
+| Pattern | Time Unit | Number Range |
+| --- | --- | --- |
+| Mi | Milliseconds | 0 - 9999 |
+| S | Seconds | 0 - 59 |
+| M | Minutes | 0 - 59 |
+| H | Hours | 0 - 23 |
+| D | Days | 0 - 6 |
+| W | Weeks | No Limit |
+
+Units such as Seconds or Hours do not display their limits of 60 or 24 since at that number they will convert to the next unit of time. 60 seconds to +1 minute.
+
+Note that when the **Simple** variable is set to *false*, you will instead need to use every pattern with an underscore before it. So **Mi** will now be **_Mi**. See Usage Examples to see why this can be useful.
+
+### Usage Example
+
+```lua
+--Example 1: Simple timer conversion for 65 seconds.
+local Time = Code.TimeFormat(65, "MM:SS.MiMiMi", true)
+print(Time)
+    --Expected output: "01:05.000"
+
+--Example 2: Take's Example 1 but removes the excess zero from the minutes, and removes the milliseconds.
+local Time = Code.TimeFormat(65, "M:SS")
+print(Time)
+    --Expected output: "1:05"
+    --Note that the third variable is true by default, so it is unecessary to include here.
+
+--Example 3: Displays 3 Hours  1 Minute  20.5 Seconds
+local Time = Code.TimeFormat(60^2 * 3 + 80.5, "HH:MM:SS.MiMiMi")
+print(Time)
+    --Expected output: "03:01:20.500"
+ 
+ --Example 4: How to utilize the third variable to be false to display more accurate information. This will display 6 days  1 Minute  20 Seconds
+local Time = Code.TimeFormat(60^2 * 24 * 6 + 80, "_D Days _HH:_MM:_SS._MiMiMi", false)
+print(Time)
+    --Expected output: "6 Days 00:01:20.000"
+    --Had we not set the Simple variable to false, this function would have attempted to convert the word Days to a number for the number of Days as well since it starts with a D.
 ```
 
 ___
