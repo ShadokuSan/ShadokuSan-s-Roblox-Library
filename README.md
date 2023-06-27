@@ -1004,26 +1004,6 @@ Code.WaitOn({"Part1",Part1.Part:GetPropertyChangedSignal("Transparency")},{"Part
 ___
 </details>
 
-<details><summary>Require</summary>
-
-**Description:** Requires multiple modules at once.
-
-**Setup:** `Code.Require(Modules...)`
-
-**Returns:** The modules you wanted to fetch.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Modules | ModuleScript | nil | The module(s) you'd like to require. |
-
-### Usage Example
-
-```lua
-local A,B,C = Code.Require(ModuleA,ModuleB,ModuleC)
-```
-
-___
-</details>
-
 <details><summary>Make</summary>
 
 **Description:** Quickly make multiple of the same thing.
