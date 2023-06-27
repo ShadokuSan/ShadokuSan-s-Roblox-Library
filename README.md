@@ -227,6 +227,55 @@ local Brick = Code.Replace(workspace.Brick1,"Part"){Name = "Brick2",CFrame = wor
 ___
 </details>
 
+
+
+<details><summary>GetInstance</summary>
+
+**Description:** Searches for an Instance or creates a new one if it doesn't yet exist.
+
+**Setup:** `Code.GetInstance(Where, Name, ClassName, MatchProperties){Properties}`
+
+**Returns:** The Instance that gets found or the newly created one.
+| Variable | Type | Default | Description |
+| --- | --- | --- | --- |
+| Where | Instance | nil | The Instance that you wish to search in. Only scans the direct children. Also acts as the new Instance's parent if one needs to be made. |
+| Name | string | nil | The name of the Instance you're looking for. Also acts as the new Instance's name if one needs to be made. |
+| ClassName | string | nil | The ClassName of the Instance you're looking for. Also acts as the new Instance's class if one needs to be made. |
+| MatchProperties | boolean | false | Determines if while searching for this instance it should also match the Properties table. |
+| Properties | table | {} | The properties of the new Instance that gets made if needed. |
+
+This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
+
+### Usage Example
+
+```lua
+--Example 1: 
+local RemoteEvent = Code.GetInstance(game:GetService("ReplicatedStorage"), "MyRemote", "RemoteEvent", false){}
+--[[ Searches the game's ReplicatedStorage for a RemoteEvent named "MyRemote".
+
+    Since the 4th variable is false and a RemoteEvent doesn't have any other notable properties,
+    the following Properties table here is left empty since it does nothing in this situation.
+
+    If this RemoteEvent did not exist, then this would have automatically made a new RemoteEvent
+    with the name "MyRemote" under the game's ReplicatedStorage.
+
+    Note that in any situation where a new Instance needs to be made, it will be parented after every
+    other property is set.
+]]
+
+--Example 2:
+local NumberValue = Code.GetInstance(workspace, "MyNumber", "NumberValue", true){Value = 5}
+--[[ Searches the Workspace for a NumberValue named "MyNumber" and also has the value of 5 since the
+    4th variable is set to true.
+
+    If the 4th variable was set to false and a new instance needed to be made, the function would not
+    check if the NumberValue had a value of 5 but would still make a new NumberValue that does have a value of 5.
+]]
+```
+
+___
+</details>
+
 <details><summary>Call</summary>
 
 **Description:** Call multiple functions on a single instance at roughly the same time.
