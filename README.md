@@ -233,7 +233,7 @@ ___
 
 **Description:** Searches for an Instance or creates a new one if it doesn't yet exist.
 
-**Setup:** `Code.GetInstance(Where, Name, ClassName, MatchProperties){Properties}`
+**Setup:** `Code.GetInstance(Where, Name, ClassName, PropertyType){Properties}`
 
 **Returns:** The Instance that gets found or the newly created one.
 | Variable | Type | Default | Description |
@@ -241,10 +241,18 @@ ___
 | Where | Instance | nil | The Instance that you wish to search in. Only scans the direct children. Also acts as the new Instance's parent if one needs to be made. |
 | Name | string | nil | The name of the Instance you're looking for. Also acts as the new Instance's name if one needs to be made. |
 | ClassName | string | nil | The ClassName of the Instance you're looking for. Also acts as the new Instance's class if one needs to be made. |
-| MatchProperties | boolean | false | Determines if while searching for this instance it should also match the Properties table. |
+| PropertyType | boolean / string | false | Determines the behavior of the search function regarding the Properties table. See below for more details. |
 | Properties | table | {} | The properties of the new Instance that gets made if needed. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
+
+### PropertyType Usage
+
+• **Match:** When searching for the Name and ClassName of the Instance, it will now also check if the Properties from the Properties Table match.
+
+• **Force:** If an Instance is found that has the correct Name and ClassName, it will automatically change the rest of its properties from that of the Properties table.
+
+• `false` Will do neither.
 
 ### Usage Example
 
@@ -264,12 +272,18 @@ local RemoteEvent = Code.GetInstance(game:GetService("ReplicatedStorage"), "MyRe
 ]]
 
 --Example 2:
-local NumberValue = Code.GetInstance(workspace, "MyNumber", "NumberValue", true){Value = 5}
+local NumberValue = Code.GetInstance(workspace, "MyNumber", "NumberValue", "Match"){Value = 5}
 --[[ Searches the Workspace for a NumberValue named "MyNumber" and also has the value of 5 since the
-    4th variable is set to true.
+    4th variable is set to "Match"
 
     If the 4th variable was set to false and a new instance needed to be made, the function would not
     check if the NumberValue had a value of 5 but would still make a new NumberValue that does have a value of 5.
+]]
+
+--Example 3:
+local NumberValue = Code.GetInstance(workspace, "MyNumber", "NumberValue", "Force"){Value = 5}
+--[[ Searches the Workspace for a NumberValue named "MyNumber" and will set its value to 5 since the
+    4th variable was set to "Force"
 ]]
 ```
 
