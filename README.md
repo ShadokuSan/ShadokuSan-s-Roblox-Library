@@ -65,6 +65,7 @@ This is a table that hosts multiple semi-commonly used formulas, put into functi
 | InstanceName | string | nil | The ClassName of the instance you want to create. |
 | Parent | Instance | nil | Where this instance will be parented under. Occurs after all other properties are set. |
 | ParentFirst | boolean | false | Will set the parent before all other properties instead. |
+| | | | |
 | Properties | table | {} | The properties of the instance you're creating. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
@@ -95,6 +96,7 @@ ___
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instances | Instance / {Instance...} | nil | The instance(s) that you wish to edit. |
+| | | | |
 | Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you're editing. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
@@ -150,6 +152,7 @@ ___
 | --- | --- | --- | --- |
 | Value | Any | nil | The value that the Properties are being changed to (if possible). |
 | Instances | Instance | nil | The Instance(s) that you're editing. |
+| | | | |
 | Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you're editing. |
 
 ### Usage Example
@@ -178,6 +181,7 @@ ___
 | Item | Instance | nil | The Instance that you wish to clone. |
 | SameParent | boolean | false | Determines if the cloned instance is parented under the same parent as the original. |
 | ParentFirst | boolean | false |  Determines if the cloned instance is parented before<sub>(true)</sub> the property changes or after.<sub>(false)</sub> Only takes effect if SameParent is set to true. |
+| | | | |
 | Properties | table | {} | The properties/attributes of the instance you're cloning; if you're changing any. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
@@ -209,6 +213,7 @@ ___
 | Replacement | Instance / string | nil | The Instance that you wish to clone or a string for the class that you want to create. |
 | SameParent | boolean | false | Determines if the cloned instance is parented under the same parent as the original. |
 | ParentFirst | boolean | false | Determines if the cloned instance is parented before<sub>(true)</sub> the property changes or after.<sub>(false)</sub> Only takes effect if SameParent is set to true. |
+| | | | |
 | Properties | table | {} | The properties/attributes of the instance you're using as the replacement; if you're changing any. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
@@ -242,6 +247,7 @@ ___
 | Name | string | nil | The name of the Instance you're looking for. Also acts as the new Instance's name if one needs to be made. |
 | ClassName | string | nil | The ClassName of the Instance you're looking for. Also acts as the new Instance's class if one needs to be made. |
 | PropertyType | boolean / string | false | Determines the behavior of the search function regarding the Properties table. See below for more details. |
+| | | | |
 | Properties | table | {} | The properties of the new Instance that gets made if needed. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
@@ -354,6 +360,7 @@ ___
 | MaxAmount | number | :infinity: | The number of instances you want to be returned (works only if ReturnFirst is false). |
 | FrameSpeed | number | 0 | A delay between each item searched. Good if you're searching a lot of items and it tends to lag. |
 | IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
+| | | | |
 | Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#on-searching-values) section for details on how to use them.
@@ -363,34 +370,43 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 ```lua
 --Example 1:
 local Get = Code.Find(workspace.Model,false,true){Name="Brick","Anchored"=true}
+
 --Example 2:
 local Get = Code.Find(workspace.Model,true){Name="Brick","Anchored"=true}
+
 --Example 3:
 local Get = Code.Find(workspace.Model,false,true,10,2){ClassName="Part"}
     --10 will return 10 items, or less if there aren't 10 that match all of the Properties.
     --1 means it'll search and add every found item every 2 frames.
+
 --Special Inputs 1:
 local Get = Code.Find(workspace.Model){Name="...Brick",Transparency="<1",Color="R"}
     --returns any parts that have names that end with "Brick",
     --has a transparency less than 1, and their Color value is dominantly red.
+
 --Special Inputs 2:
 local Get = Code.Find(workspace.Model){Name="Brick...",Reflectance=">=0.5",BrickColor="...red"}
     --returns any parts that have names that start with "Brick",
     --has their reflectance set to 0.5 or greater,
     --and their BrickColor is any BrickColor ending in "red".
+
 --Special Inputs 3:
 local Get = Code.Find(workspace.Model,false,true){IsA="BasePart"}
     --returns all instances that are classified as base parts.
+
 --Special Inputs 4:
 local Get = Code.Find(workspace.Model,false,true){Name={"Test1","Test2"}}
     --returns all parts that have their names as either Test1 or Test2.
+
 --Special Inputs 5:
 local Get = Code.Find(workspace,true,true){IsA="BasePart",IsPartOf={{"Folder",1}}}
     --returns the first BasePart it finds that is also the direct child of a Folder Instance.
     --Check the IsPartOf function of this module to see the general set-up.
+
 --Special Inputs 6:
 local Get = Code.Find(workspace.true,false){IsA="BasePart",["Position.X"]>="<10"}
     --returns all parts in the workspace with a position of X that is less than 10
+
 --Special Inputs 7:
 local Get = Code.Find(workspace.true,false){IsA="BasePart",Attribute={"Test",5}}
     --returns all parts in the workspace that has an attribute named "Test" that are also equal to 5
@@ -414,7 +430,9 @@ ___
 | MaxAmount | number | :infinity: | The number of instances you want to be returned (works only if ReturnFirst is false). |
 | FrameSpeed | number | 0 | A delay between each item searched. Good if you're searching a lot of items and it tends to lag. |
 | IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
+| | | | |
 | HasProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
+| | | | |
 | ChangeProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re editing. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) and [On Finding Values](#on-searching-values) sections for details on how to use them.
@@ -444,6 +462,7 @@ ___
 | MaxAmount | number | :infinity: | The number of instances you want to be destroyed. |
 | FrameSpeed | number | 0 | A delay between each item searched. Good if you're searching a lot of items and it tends to lag. |
 | IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
+| | | | |
 | HasProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#on-searching-values) section for details on how to use them.
@@ -729,18 +748,22 @@ ___
 
 **Description:** A simplified method of making a tween.
 
-**Setup:** `Code.Tween(Instance){Time, Style, Direction, Repeat, Reverses, Delay}{Properties}`
+**Setup 1:** `Code.Tween(Instance, TweenInfo){Properties}`
+
+**Setup 2:** `Code.Tween(Instance, Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
 
 **Returns:** The Tween you've created.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instance | Instance | nil | The Instance in which you wish to tween. |
-| Time | number | 1 | How long it takes the tween to complete. |
+| TweenInfo¹ | TweenInfo | Below Defaults | The TweenInfo you wish to use. |
+| Time² | number | 1 | How long it takes the tween to complete. |
 | Style | Enum / number / string | Linear | The EasingStyle of the tween. |
 | Direction | Enum / number / string | InOut | The EasingDirection of the tween. |
 | Repeat | number | 0 | How many times the tween will repeat. |
 | Reverses | boolean | false | Determines if the tween will do the inverse after finishing. |
 | Delay | number | 0 | The amount of time that elapses before tween starts in seconds. |
+| | | | |
 | Properties | table | {} | The properties that are being changed by the tween. Generally numerical. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
@@ -748,7 +771,13 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 ### Usage Example
 
 ```lua
-local Tween = Code.Tween(script.Parent){1,"Bounce","Out",1,true,0.5}{Position=script.Parent.Position+Vector3.new(0,3,0)}
+--Example 1:
+local MyInfo = TweenInfo.new(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out, 1, true, 0.5)
+local Tween = Code.Tween(script.Parent, TweenInfo}{Position = script.Parent.Position + Vector3.new(0,3,0)}
+Tween:Play()
+
+--Example 2:
+local Tween = Code.Tween(script.Parent, 1, "Bounce", "Out", 1, true, 0.5}{Position = script.Parent.Position + Vector3.new(0,3,0)}
 Tween:Play()
 ```
 
@@ -759,18 +788,23 @@ ___
 
 **Description:** A method for making multiple tweens of the same or similar items.
 
-**Setup:** `Code.Tweens(Instances...){Time, Style, Direction, Repeat, Reverses, Delay}{Properties}`
+**Setup 1:** `Code.Tweens(Instances...)(TweenInfo){Properties}`
 
-**Returns:** Nothing.
+**Setup 2:** `Code.Tweens(Instances...)(Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
+
+**Returns:** Nothing. Due to some limitations, this auto-plays all of the tweens made.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instances | Instance | nil | The Instances in which you wish to tween. |
-| Time | number | 1 | How long it takes the tween to complete. |
+| | | | |
+| TweenInfo¹ | TweenInfo | Below Defaults | The TweenInfo you wish to use. |
+| Time² | number | 1 | How long it takes the tween to complete. |
 | Style | Enum / number / string | Linear | The EasingStyle of the tween. |
 | Direction | Enum / number / string | InOut | The EasingDirection of the tween. |
 | Repeat | number | 0 | How many times the tween will repeat. |
 | Reverses | boolean | false | Determines if the tween will do the inverse after finishing. |
 | Delay | number | 0 | The amount of time that elapses before tween starts in seconds. |
+| | | | |
 | Properties | table | {} | The properties that are being changed by the tween. Generally numerical. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
@@ -778,11 +812,15 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 ### Usage Example
 
 ```lua
-local Part1,Part2 = workspace.Part1,workspace.Part2
-Code.Tweens(Part1,Part2){1,"Bounce","Out",1,true,0.5}{Position=Vector3.new(0,5,0)}
-```
+--Example 1
+local MyInfo = TweenInfo.new(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out, 1, true, 0.5)
+local Part1, Part2 = workspace.Part1, workspace.Part2
+Code.Tweens(Part1, Part2)(MyInfo){Position = Vector3.new(0,5,0)}
 
-**Note:** This auto-plays all of the tweens made. I intended it to return each tween individually similarly to the Service function, but something ROBLOX-side seems to be preventing this from working as of this update.
+--Example 2
+local Part1, Part2 = workspace.Part1, workspace.Part2
+Code.Tweens(Part1, Part2)(1, "Bounce", "Out", 1, true, 0.5){Position = Vector3.new(0,5,0)}
+```
 ___
 </details>
 
@@ -792,18 +830,22 @@ ___
 
 **Description:** An experimental method to tween what was previously untweenable.
 
-**Setup:** `Code.TweenSequence(Instances...){Time, Style, Direction, Repeat, Reverses, Delay}{Properties}`
+**Setup 1:** `Code.TweenSequence(Instance, TweenInfo){Properties}`
+
+**Setup 2:** `Code.TweenSequence(Instance, Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
 
 **Returns:** A special tween-base made via metatables. Should be able to work just like a normal Tween with the same functions and variables. This includes a new function: **Tween:Destroy()** since this works in a specific way, if you want to clean up a bit, I recommend you use this when not needed anymore.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instances | Instance | nil | The Instances in which you wish to tween. |
-| Time | number | 1 | How long it takes the tween to complete. |
+| TweenInfo¹ | TweenInfo | Below Defaults | The TweenInfo you wish to use. |
+| Time² | number | 1 | How long it takes the tween to complete. |
 | Style | Enum / number / string | Linear | The EasingStyle of the tween. |
 | Direction | Enum / number / string | InOut | The EasingDirection of the tween. |
 | Repeat | number | 0 | How many times the tween will repeat. |
 | Reverses | boolean | false | Determines if the tween will do the inverse after finishing. |
 | Delay | number | 0 | The amount of time that elapses before tween starts in seconds. |
+| | | | |
 | Properties | table | {} | The properties that are being changed by the tween. In this case, restricted. |
 
 ## **What can be tweened currently**
@@ -830,7 +872,7 @@ local ChangeTo = ColorSequence.new{
  ColorSequenceKeypoint.new(0.75,Color3.fromRGB(0, 0, 255)),
  ColorSequenceKeypoint.new(1,Color3.fromRGB(0, 0, 0))}
 
-local Tween = Code.TweenSequence(Beam){1,"Linear","InOut",2,true,0.5}{Color = ChangeTo}
+local Tween = Code.TweenSequence(Beam, 1, "Linear", "InOut", 2, true, 0.5){Color = ChangeTo}
 Tween:Play()
 --Should tween any beam's colors to look a bit rainbow-like, reverts back, and does this a couple of times.
 
@@ -841,7 +883,9 @@ local ChangeTo = NumberSequence.new{
  NumberSequenceKeypoint.new(0.349,3.39,1.58),
  NumberSequenceKeypoint.new(1,1)}
 
-local Tween = Code.TweenSequence(ParticleEmitter){1,"Linear","InOut",2,true,0.5}{["~Size"> = ChangeTo}
+local MyInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 2, true, 0.5)
+
+local Tween = Code.TweenSequence(ParticleEmitter, MyInfo){["~Size"] = ChangeTo}
 Tween:Play()
 Tween.Completed:Wait()
 print("Demo finished!")
@@ -1045,12 +1089,15 @@ ___
 | --- | --- | --- | --- |
 | Variant | Number / Signal / Function / Table | nil | The method of waiting you'd like to input |
 
-**Note:**
-Variant can be presented as any of the following:
-♦ Number: The number of seconds you'd like to wait. Same as **wait(Number)**.
-♦ Signal: An event such as **Instance.Changed**.
-♦ Function: Your own method of waiting, I suppose. A function.
-♦ Table {Name,Signal}: Name is a string that you'd want to be returned, and Signal is an event or function. Makes for easier identification.
+**Variant Usage**
+
+• Number: The number of seconds you'd like to wait. Same as **wait(Number)**.
+
+• Signal: An event such as **Instance.Changed**.
+
+• Function: Your own method of waiting, I suppose. A function.
+
+• Table {Name,Signal}: Name is a string that you'd want to be returned, and Signal is an event or function. Makes for easier identification.
 
 ### Usage Example
 
@@ -1218,15 +1265,18 @@ ___
 
 **Description:** A simplified method of making a plugin widget. For Plugins only.
 
-**Setup:** `Code.Plugin_Widget(Plugin, Identifier, DisplayName){InitialDockState, InitialEnabled, RestoreOverride, SizeX, SizeY, SizeMinimumX, SizeMinimumY}`
+**Setup 1:** `Code.Plugin_Widget(Plugin, Identifier, DisplayName, DockWidgetPluginGuiInfo)`
+
+**Setup 2:** `Code.Plugin_Widget(Plugin, Identifier, DisplayName, InitialDockState, InitialEnabled, RestoreOverride, SizeX, SizeY, SizeMinimumX, SizeMinimumY)`
 
 **Returns:** The widget you've created.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Plugin | plugin | nil | Simply pass the plugin variable through. |
-| Identifier | string | nil | The plugin widget's ID. |
-| DisplayName | string | nil | The name shown on the widget window. |
-| InitialDockState | Enum / string / number | Float | Initial dock state. |
+| Identifier | string | "UnknownWidget" | The plugin widget's ID. |
+| DisplayName | string | "UnknownWidget" | The name shown on the widget window. |
+| DockWidgetPluginGuiInfo¹ | DockWidgetPluginGuiInfo | Below Defaults | The DockWidgetPluginGuiInfo you wish to use. |
+| InitialDockState² | Enum / string / number | Float | Initial dock state. |
 | InitialEnabled | boolean | true | If the widget is visible upon being made. |
 | RestoreOverride | boolean | false | If true, the value of **InitialEnabled** will override the previously saved enabled state. |
 | SizeX | number | 200 | Initial width of the widget window. |
@@ -1237,7 +1287,13 @@ ___
 ### Usage Example
 
 ```lua
-local Widget = Code.Plugin_Widget(plugin,"TestWidget","Test Widget"){"Float",true,false,200,300,150,150}
+--Example 1
+local MyInfo = DockWidgetPluginGuiInfo.new(Enum.InitialDockState.Float, true, false, 200, 300, 150, 150)
+local Widget = ShadLibrary.Plugin_Widget(plugin, "TestWidget", "Test Widget", MyInfo)
+-- Creating a basic test widget with basically the default values in place.
+
+--Example 2
+local Widget = Code.Plugin_Widget(plugin, "TestWidget", "Test Widget", "Float", true, false, 200, 300, 150, 150)
 -- Creating a basic test widget with basically the default values in place.
 ```
 
