@@ -540,7 +540,7 @@ ___
 
 <details><summary>GetPartOf</summary>
 
-**Description:** Fetches a property from an array of instances.
+**Description:** es a property from an array of instances.
 
 **Setup:** `Code.GetPartOf(Instances, Property)`
 
@@ -557,7 +557,7 @@ ___
 local Transparencies = Code.GetPartOf(Parts:GetChildren(),"Transparency")
 print(unpack(Transparencies))
 
---Example 2: Let's fetch all of the Y positions of each part now.
+--Example 2: Let's  all of the Y positions of each part now.
 local Y = Code.GetPartOf(Parts:GetChildren(),"Position.Y")
 print(unpack(Y))
 ```
@@ -666,6 +666,39 @@ local Color,Size = Code.Fetch(workspace.Baseplate,"Color","Size")
 ----Example 2
 local Color,SizeX,SizeY,SizeZ = Code.Fetch(workspace.Baseplate,"Color","Size > X,Y,Z")
     --Will return each size axis after getting the part's color.
+```
+
+___
+</details>
+
+<details><summary>WeldTo</summary>
+
+**Description:** Automatically welds (via WeldConstraints) a lot of parts to a singular part.
+
+**Setup:** `Code.WeldTo(Main, WeldParent, UnanchorOthers, BaseParts...)`
+
+**Returns:** `nil`
+| Variable | Type | Default | Description |
+| --- | --- | --- | --- |
+| Main | BasePart | nil | The part that everything else will weld to. |
+| WeldParent | Instance | nil | Where all of the created WeldConstraints will go. |
+| UnanchorOthers | boolean | nil | Determines if after making the weld, the attatched part gets unanchored. |
+| BaseParts... | BasePart / {BasePart} | nil | A list of BaseParts you want welded. |
+
+### Usage Example
+
+```lua
+----Example 1
+local Part1, Part2, Part3, Part4 = workspace.Part1, workspace.Part2, workspace.Part3, workspace.Part4 
+
+Code.WeldTo(Part1, Part1, false, Part2, Part3, Part4)
+    --This will weld Parts 2-4 to Part1. Welds will be parented inside of Part1. Parts 2-4 will not be forcefully unanchored.
+
+----Example 2
+local Part1, Part2, Part3, Part4 = workspace.Part1, workspace.Part2, workspace.Part3, workspace.Part4 
+
+Code.WeldTo(Part1, workspace, true, Part2, {Part3, Part4})
+    --This will weld Parts 2-4 to Part1. Welds will be parented inside of the Workspace. Parts 2-4 will be forcefully unanchored.
 ```
 
 ___
