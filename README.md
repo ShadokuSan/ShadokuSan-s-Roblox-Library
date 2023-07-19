@@ -693,9 +693,15 @@ ___
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Main | BasePart | REQUIRED | The part that everything else will weld to. |
-| WeldParent | Instance | REQUIRED | Where all of the created WeldConstraints will go. |
-| UnanchorOthers | boolean | REQUIRED | Determines if after making the weld, the attatched part gets unanchored. |
+| WeldParent | Instance / true | REQUIRED | Where all the created WeldConstraints will go. |
+| UnanchorOthers | boolean | REQUIRED | Determines if the attached part gets unanchored after making the weld. |
 | BaseParts... | BasePart / {BasePart} | REQUIRED | A list of BaseParts you want welded. |
+
+### WeldParent Usage
+
+• **true:** This will default to the Main variable.
+
+• **Instance:** The Instance where all of the WeldConstraints will be stored, if not `true`.
 
 ### Usage Example
 
