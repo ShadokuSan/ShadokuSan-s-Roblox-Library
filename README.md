@@ -44,6 +44,8 @@ This is a table that hosts multiple semi-commonly used formulas, put into functi
 | PointOnRay | PointOnRay(Point1: Vector3, Point2: Vector3, ReferencePoint: Vector3) | Returns a position by making a ray/line between **Point1** and **Point2**, then uses the **ReferencePoint** to find the closest position from said line. |
 | Lerp | Lerp(Start: number, End: number, Alpha: number) | Returns the number between the **Start** and **End** based on the Alpha (between 0-1). |
 | TimeConvert | TimeConvert(Seconds: number, TimeUnit: string<"Milliseconds", "Seconds", "Hours", "Days", "Weeks">) | Returns the conversion of seconds to another time unit. |
+| CFrameToOrientation | CFrameToOrientation(CF: CFrame) | Simply fetches the orientation of a CFrame. |
+| OrientationToCFrame | OrientationToCFrame(Orientation: Vector3) | Simply converts an orientation to usable CFrame angles. |
 
 #
 
