@@ -1397,7 +1397,7 @@ ___
 
 **Setup 2:** `Code.GetAttributes(Instance, Attribute...)`
 
-**Returns:** The attribute's value or **false** if none exists.
+**Returns:** The attribute's value or **nil** if none exists.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instance | Instance | REQUIRED | The Instance that you'd like to find the attribute of. |
@@ -1421,7 +1421,7 @@ Code.SetAttributes(Part, {TestString = "String!", TestNumber = 5, TestBoolean = 
 local A, B, C, D = Code.GetAttributes(Part, "TestNumber", "TestString", "TestBrick", "TestBoolean")
 --A would be 5
 --B would be "String!"
---C would be false since there is no match
+--C would be nil since there is no match
 --D would be true
 
 ----Example 2
@@ -1433,8 +1433,8 @@ local A, B = Code.GetAttributes(Part, {"TestNumber", 5}, "TestString")
 ----Example 3
 local Part = workspace.Brick
 local A, B = Code.GetAttributes(Part, false, {"TestNumber", 5}, "TestString")
---A would be false if it doesn't already exist since the AutoMake variable was set to false
---B would be false assuming one wasn't there
+--A would be nil if it doesn't already exist since the AutoMake variable was set to false
+--B would be nil assuming one wasn't there
 ```
 
 ___
