@@ -76,7 +76,7 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 
 ```lua
 --Simply make a new part that will be parented to the workspace.
-local Part = Code.new('Part', workspace){Name = "TestPart", Position = Vector3.new(0,5,6), Anchored = true}
+local Part = Code.new('Part', workspace){Name = "TestPart", Position = Vector3.new(0, 5, 6), Anchored = true}
 
 --Another part is made, but is parented under the workspace before the properties are set.
 local Part = Code.new('Part', workspace, true){Name = "TestPart", Position = Vector3.new(0, 5, 6), Anchored = true}
@@ -118,25 +118,25 @@ Code.Change(BoolValue1, BoolValue2){Value = "not"}
 
 --Special Inputs 2:
 Code.Change(NumberValue1, NumberValue2){Value = "+5"}
-    --Adds 5 to each individual number value.
+    --Adds 5 to each number value.
 
 --Special Inputs 3:
 Code.Change(NumberValue1, NumberValue2){Same = {0.5, "Transparency", "Reflectance"}}
     --Makes their transparency and reflectance values 0.5.
 
 --Special Inputs 4:
-Code.Change(PartTable){Position = "~0,5,0"}
+Code.Change(PartTable){Position = "~0, 5, 0"}
     --Moves each part in your PartTable 5 studs up independent of each other.
 
 --Special Inputs 5:
-Code.Change(PartTable){CFrame = "~0,5,0"}
+Code.Change(PartTable){CFrame = "~0, 5, 0"}
     --Moves each part in your PartTable 5 studs up relatively via CFrame:ToWorldSpace.
 
-Code.Change(PartTable){CFrame = "@0,90,0"}
+Code.Change(PartTable){CFrame = "@0, 90, 0"}
     --Rotates each part 90 degrees on the Y-axis.
 
-Code.Change(PartTable){CFrame = "<0,5,0,0,90,0"}
-    --Moves each part in your PartTable 5 studs up relatively via CFrame:ToWorldSpace, and then applies a 90 degree rotation on the Y-Axis. Using > will do the inverse order.
+Code.Change(PartTable){CFrame = "<0, 5, 0, 0, 90, 0"}
+    --Moves each part in your PartTable 5 studs up relatively via CFrame:ToWorldSpace, and then applies a 90-degree rotation on the Y-Axis. Using > will do the inverse order.
 
 --Special Inputs 6:
 function Func(Part)
@@ -145,35 +145,6 @@ end
 
 Code.Change(PartTable){CFrame = Func}
     --Moves each part in your PartTable 5 studs up independently of each other and their rotation.
-```
-
-___
-</details>
-
-<details><summary>ChangeSame</summary>
-
-**Aliases:** Change2
-
-**Description:** Change multiple properties of 1 or more Instances to the same value (if possible).
-
-**Setup:** `Code.ChangeSame(Value, Instances...){Properties}`
-
-**Returns:** Nothing.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Value | Any | REQUIRED | The value that the Properties are being changed to (if possible). |
-| Instances | Instance | REQUIRED | The Instance(s) that you're editing. |
-| | | | |
-| Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you're editing. |
-
-### Usage Example
-
-```lua
---Example 1:
-Code.ChangeSame(true,Part){"Massless","CanCollide"}
-
---Example 2:
-Code.ChangeSame(true,Part1,Part2,Union1){"Massless","CanCollide"}
 ```
 
 ___
@@ -207,7 +178,7 @@ local Brick = Code.Clone(workspace.Brick, true){Name = "Cloned", Position = Vect
 --Example 2:
 local Brick = Code.Clone(workspace.Brick){Name = "Cloned", Position = Vector3.new(0, 10, 0), Parent = workspace}
 
---Special Input: Same | We'll make this part be unanchored and noncollidable
+--Special Input: Same | We'll make this part unanchored and noncollidable
 local Brick = Code.Clone(workspace.Brick){Name = "Cloned", Same = {false, "Anchored", "CanCollide"}}
 ```
 
@@ -414,7 +385,7 @@ local Get = Code.Find(workspace.Model, false, true){Name = {"Test1", "Test2"}}
 --Special Inputs 5:
 local Get = Code.Find(workspace, true, true){IsA = "BasePart", IsPartOf = {{"Folder", 1}}}
     --returns the first BasePart it finds that is also the direct child of a Folder Instance.
-    --Check the IsPartOf function of this module to see the general set-up.
+    --Check the IsPartOf function of this module to see the general setup.
 
 --Special Inputs 6:
 local Get = Code.Find(workspace.true, false){IsA = "BasePart", ["Position.X"] = "<10"}
@@ -454,7 +425,7 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 
 ```lua
 local Get = Code.FindChange(workspace, true, false){["Position.X"] = "<=-0.5"}{Material = Enum.Material.Neon}
-print("Got:",Get)
+print("Got:", Get)
 --Will find parts that have a position value of X that is less than or equal to -0.5, then changes all of their materials to neon. Then returns a list of the changed parts.
 ```
 
@@ -514,7 +485,7 @@ local PartA, PartB, PartC = Code.FindAllChildren(workspace, false, "PartA", "Par
 --Could look like: PartA, false, PartC if there is no PartB
 
 --Example 2:
-local Mesh,Texture = Code.FindAllChildren(workspace,false,"PartA.Mesh","PartB.Texture")
+local Mesh, Texture = Code.FindAllChildren(workspace, false, "PartA.Mesh", "PartB.Texture")
 --Is capable of searching through multiple instances downwards.
 
 --Example 3:
@@ -562,7 +533,7 @@ ___
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instances | {Instance...} | {} | An array of Instances you want to check through. |
-| Property | string | REQUIRED | The property you want returned. Can also be set to return a secondary value if one exists (like Vector3 with X,Y or Z). |
+| Property | string | REQUIRED | The property you want returned. Can also be set to return a secondary value if one exists (like Vector3 with X, Y, or Z). |
 
 ### Usage Example
 
@@ -675,7 +646,7 @@ If after a `>` there are any commas, these will be taken into consideration sepa
 ```lua
 ----Example 1
 local Color, Size = Code.Fetch(workspace.Baseplate, "Color", "Size")
-    --Can be followed by as many variables as necessary as long as the input actually has these things.
+    --Can be followed by as many variables as necessary as long as the input has these things.
 
 ----Example 2
 local Color, SizeX, SizeY, SizeZ = Code.Fetch(workspace.Baseplate, "Color", "Size > X,Y,Z")
@@ -829,11 +800,11 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 ```lua
 --Example 1:
 local MyInfo = TweenInfo.new(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out, 1, true, 0.5)
-local Tween = Code.Tween(script.Parent, TweenInfo}{Position = script.Parent.Position + Vector3.new(0,3,0)}
+local Tween = Code.Tween(script.Parent, TweenInfo}{Position = script.Parent.Position + Vector3.new(0, 3, 0)}
 Tween:Play()
 
 --Example 2:
-local Tween = Code.Tween(script.Parent, 1, "Bounce", "Out", 1, true, 0.5}{Position = script.Parent.Position + Vector3.new(0,3,0)}
+local Tween = Code.Tween(script.Parent, 1, "Bounce", "Out", 1, true, 0.5}{Position = script.Parent.Position + Vector3.new(0, 3, 0)}
 Tween:Play()
 ```
 
@@ -871,11 +842,11 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 --Example 1
 local MyInfo = TweenInfo.new(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out, 1, true, 0.5)
 local Part1, Part2 = workspace.Part1, workspace.Part2
-Code.Tweens(Part1, Part2)(MyInfo){Position = Vector3.new(0,5,0)}
+Code.Tweens(Part1, Part2)(MyInfo){Position = Vector3.new(0, 5, 0)}
 
 --Example 2
 local Part1, Part2 = workspace.Part1, workspace.Part2
-Code.Tweens(Part1, Part2)(1, "Bounce", "Out", 1, true, 0.5){Position = Vector3.new(0,5,0)}
+Code.Tweens(Part1, Part2)(1, "Bounce", "Out", 1, true, 0.5){Position = Vector3.new(0, 5, 0)}
 ```
 ___
 </details>
@@ -922,15 +893,15 @@ Works largely similar to ColorSequence, but instead with colors it deals in numb
 ----Example 1
 local Beam = workspace.Part1.Beam
 local ChangeTo = ColorSequence.new{
- ColorSequenceKeypoint.new(0,Color3.fromRGB(0, 0, 0)),
- ColorSequenceKeypoint.new(0.25,Color3.fromRGB(255, 0, 0)),
- ColorSequenceKeypoint.new(0.5,Color3.fromRGB(0, 255, 0)),
- ColorSequenceKeypoint.new(0.75,Color3.fromRGB(0, 0, 255)),
- ColorSequenceKeypoint.new(1,Color3.fromRGB(0, 0, 0))}
+ ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+ ColorSequenceKeypoint.new(0.25, Color3.fromRGB(255, 0, 0)),
+ ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 0)),
+ ColorSequenceKeypoint.new(0.75, Color3.fromRGB(0, 0, 255)),
+ ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))}
 
 local Tween = Code.TweenSequence(Beam, 1, "Linear", "InOut", 2, true, 0.5){Color = ChangeTo}
 Tween:Play()
---Should tween any beam's colors to look a bit rainbow-like, reverts back, and does this a couple of times.
+--Should tween any beam's colors to look a bit rainbow-like, revert, and does this a couple of times.
 
 ----Example 2
 local ParticleEmitter = workspace.Part5.ParticleEmitter
@@ -1019,7 +990,7 @@ Function will always use 2 variables at the start: The Instance connected, and a
 Format it as so:
 
 ```lua
-function TestFunction(Instance,Event,...)
+function TestFunction(Instance, Event, ...)
 --Instance being the instance.
 --Event is a string of the event you chose to connect.
 local VarA, VarB, VarC, etc = ...
@@ -1142,7 +1113,7 @@ ___
 
 **Setup:** `Code.WaitOn(Variant...)`
 
-**Returns:** The method that prevailed (only really applicable for those who understand in the case of an event being returned).
+**Returns:** The method that prevailed (only applicable for those who understand in the case of an event being returned).
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Variant | Number / Signal / Function / Table | REQUIRED | The method of waiting you'd like to input |
@@ -1155,7 +1126,7 @@ ___
 
 • Function: Your own method of waiting, I suppose. A function.
 
-• Table {Name,Signal}: Name is a string that you'd want to be returned, and Signal is an event or function. Makes for easier identification.
+• Table {Name, Signal}: Name is a string that you'd want to be returned, and Signal is an event or function. Makes for easier identification.
 
 ### Usage Example
 
@@ -1273,11 +1244,11 @@ local Time = Code.TimeFormat(65, "MM:SS.MiMiMi", true)
 print(Time)
     --Expected output: "01:05.000"
 
---Example 2: Take's Example 1 but removes the excess zero from the minutes, and removes the milliseconds.
+--Example 2: Takes Example 1 but removes the excess zero from the minutes, and removes the milliseconds.
 local Time = Code.TimeFormat(65, "M:SS")
 print(Time)
     --Expected output: "1:05"
-    --Note that the third variable is true by default, so it is unecessary to include here.
+    --Note that the third variable is true by default, so it is unnecessary to include here.
 
 --Example 3: Displays 3 Hours  1 Minute  20.5 Seconds
 local Time = Code.TimeFormat(60^2 * 3 + 80.5, "HH:MM:SS.MiMiMi")
@@ -1484,8 +1455,10 @@ This list is specifically for the functions where changing the properties of an 
 
 | Name | Type | Effects | Description | Example |
 | --- | --- | --- | --- | --- |
-| Same# | Property Name | Any | Allows you to set multiple properties to the same value. Provide a table where the first entry is the value you want to be set, then each subsequent entry is a string that is the name of the property you want to change. As long as the **#** at the end is a different number, you can use this as many times as necessary. | {Same1 = {true, "Anchored", "CanCollide"}, Same2 = {false,"CastShadow", "Locked"}} |
+| Same# | Property Name | Any | Allows you to set multiple properties to the same value. Provide a table where the first entry is the value you want to be set, then each subsequent entry is a string that is the name of the property you want to change. As long as the **#** at the end is a different number, you can use this as many times as necessary. | {Same1 = {true, "Anchored", "CanCollide"}, Same2 = {false, "CastShadow", "Locked"}} |
 | Sides | Property Name | Surfaces | Changes all of the sides for BaseParts at the same time. | {Sides = "Smooth"} |
+| AddTags | Property Name | Tags | Allows you to set multiple tags. | {AddTags = {"Tag1", "Tag2", etc...} |
+| RemoveTags | Property Name | Tags | Allows you to remove multiple tags. | {RemoveTags = {"Tag1", "Tag2", etc...} |
 | "nil" | Value | ObjectValues | Allows you to set a property to `nil` where applicable. | {Adornee = "nil"} |
 | "+#" | Value | Numbers | Adds the number **#** to the original value being changed. | {Value = "+0.5"} |
 | "-#" | Value | Numbers | Subtracts the number **#** to the original value being changed. | {Value = "-0.5"} |
@@ -1496,11 +1469,11 @@ This list is specifically for the functions where changing the properties of an 
 | "negate" | Value | Numbers | Basically inverts the number from negative/positive to the other. | {Value = "negate"} |
 | "not" | Value | Booleans | Returns the opposite boolean value. | {Value = "not"} |
 | Function | Value | Any | Inputs a function to return a value of your choosing. The first/only value of the function is always the Instance being changed. | See [Expanded Examples](#expanded-examples) for this instance. |
-| "~X,Y,Z" | Value | Vector3 | Changes the Vector3 relative to its current value. The **X**, **Y**, and **Z** variables are the X,Y, and Z of the Vector3 Value. No spaces should be present in here. | {Position = "~0,5,0"} |
-| **"~#,#,#"** | Value | CFrame | Translates as ToWorldSpace(CFrame). | {CFrame = "~0,0,-5"} |
-| **"@#,#,#"** | Value | CFrame | Translates as CFrame*CFrame.fromEulerAnglesXYZ(#,#,#). Automatically converted to math.rad(#). | {CFrame = "@90,0,45"} |
-| **"<#,#,#,#,#,#"** | Value | CFrame | Basically acts as the **~** and then applies the **@** changes. First three #'s affect the movement and the other three affect the rotation. | {CFrame = "<0,5,0,0,45,0"} |
-| **">#,#,#,#,#,#"** | Value | CFrame | Basically acts as the **@** and then applies the **~** changes. First three #'s affect the movement and the other three affect the rotation. | {CFrame = ">0,5,0,0,45,0"} |
+| "~X, Y, Z" | Value | Vector3 | Changes the Vector3 relative to its current value. The **X**, **Y**, and **Z** variables are the X, Y, and Z of the Vector3 Value. No spaces should be present here. | {Position = "~0, 5, 0"} |
+| **"~#, #, #"** | Value | CFrame | Translates as ToWorldSpace(CFrame). | {CFrame = "~0, 0, -5"} |
+| **"@#, #, #"** | Value | CFrame | Translates as CFrame*CFrame.fromEulerAnglesXYZ(#, #, #). Automatically converted to math.rad(#). | {CFrame = "@90, 0, 45"} |
+| **"<#, #, #, #, #, #"** | Value | CFrame | Basically acts as the **~** and then applies the **@** changes. First three #'s affect the movement and the other three affect the rotation. | {CFrame = "<0, 5, 0, 0, 45, 0"} |
+| **">#, #, #, #, #, #"** | Value | CFrame | Basically acts as the **@** and then applies the **~** changes. First three #'s affect the movement and the other three affect the rotation. | {CFrame = ">0, 5, 0, 0, 45, 0"} |
 
 ### Expanded Examples
 
@@ -1520,7 +1493,8 @@ Code.Change(PartTable){CFrame = Func}
 | --- | --- | --- | --- | --- |
 | IsA | Property Name | Instances | Works just like **Part:IsA("BasePart"). | {IsA = "BasePart"} |
 | IsPartOf | Property Name | Instances | Works with this module's **IsPartOf** function, though requires a slightly different setup. | See [Expanded Examples](#expanded-examples-1) for this instance. |
-| Attribute | Property Name | Instances | Looks for 1 attribute to match to. | {Attribute = {"Attribute Name", DesiredValue} |
+| Attribute | Property Name | Attributes | Looks for 1 attribute to match to. | {Attribute = {"Attribute Name", DesiredValue} |
+| HasTag | Property Name | Tags | Checks if the given tag is present | {HasTag = "Tag1} |
 | ">#" | Value | Numbers | Detects anything greater than the **#** in its place. | {Transparency = ">0.5"} |
 | ">=#" | Value | Numbers | Detects anything greater or equal to the **#** in its place. | {Transparency = ">=0.5"} |
 | "<#" | Value | Numbers | Detects anything lower than the **#** in its place. | {Transparency = "<0.5"} |
@@ -1535,7 +1509,7 @@ Code.Change(PartTable){CFrame = Func}
 | "GB" | Value | Color3 | Checks if the color is more **cyan** than **red** . | {Color = "GB"} |
 | "RB" | Value | Color3 | Checks if the color is more **purple** than **green** . | {Color = "RB"} |
 | "...Name" | Value | BrickColor | Checks if the name of the **BrickColor** ends with your input. | {BrickColor = "...red"} |
-| {Value,Value... etc} | Value | Any | You can now set each property to equal a table of values. Basically: If property equals this, or this, or this… etc. | {Transparency = {0, 0.5, 1}} |
+| {Value, Value... etc} | Value | Any | You can now set each property to equal a table of values. Basically: If property equals this, or this, or this… etc. | {Transparency = {0, 0.5, 1}} |
 
 ### Expanded Examples
 
