@@ -126,7 +126,7 @@ Code.Change(NumberValue1, NumberValue2){Same = {0.5, "Transparency", "Reflectanc
 
 --Special Inputs 4:
 Code.Change(PartTable){Position = "~0, 5, 0"}
-    --Moves each part in your PartTable 5 studs up independent of each other.
+    --Moves each part in your PartTable 5 studs up independently of each other.
 
 --Special Inputs 5:
 Code.Change(PartTable){CFrame = "~0, 5, 0"}
@@ -811,15 +811,43 @@ Tween:Play()
 ___
 </details>
 
-<details><summary>Tweens</summary>
+<details><summary>TweenLink</summary>
+
+**Description:** A method for linking multiple tweens together.
+Has limited usage compared to normal tweens. You may do the following: Play, Pause, Cancel, and Destroy. Has no readable properties or events to listen to (maybe will come later?).
+
+**Setup:** `Code.TweenLink(Tweens...)`
+
+**Returns:** MetaTable with the functions **Play**, **Pause**, **Cancel** and **Destroy**.
+| Variable | Type | Default | Description |
+| --- | --- | --- | --- |
+| Tweens | Tween | REQUIRED | The Tweens in which you wish to link together. |
+
+### Usage Example
+
+```lua
+--Example
+local Tween1 = Code.Tween(workspace.Brick1, TweenInfo.new(1)){Transparency = 1}
+local Tween2 = Code.Tween(workspace.Brick2, TweenInfo.new(1.5)){Transparency = 0.5}
+
+local TweenLink = ShadLibrary.TweenLink(Tween1, Tween2)
+
+TweenLink:Play()
+--The tweens will play at the same time but do not end at the same time.
+
+```
+___
+</details>
+
+<details><summary>TweenGroup</summary>
 
 **Description:** A method for making multiple tweens of the same or similar items.
 
-**Setup 1:** `Code.Tweens(Instances...)(TweenInfo){Properties}`
+**Setup 1:** `Code.TweenGroup(Instances...)(TweenInfo){Properties}`
 
-**Setup 2:** `Code.Tweens(Instances...)(Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
+**Setup 2:** `Code.TweenGroup(Instances...)(Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
 
-**Returns:** Nothing. Due to some limitations, this auto-plays all of the tweens made.
+**Returns:** Essentially makes a **TweenLink**.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instances | Instance | REQUIRED | The Instances in which you wish to tween. |
@@ -828,7 +856,7 @@ ___
 | Time² | number | 1 | How long it takes the tween to complete. |
 | Style | Enum / number / string | Linear | The EasingStyle of the tween. |
 | Direction | Enum / number / string | InOut | The EasingDirection of the tween. |
-| Repeat | number | 0 | How many times the tween will repeat. |
+| Repeat | number | 0 | Amount of times the tween will repeat. |
 | Reverses | boolean | false | Determines if the tween will do the inverse after finishing. |
 | Delay | number | 0 | The amount of time that elapses before tween starts in seconds. |
 | | | | |
@@ -842,11 +870,14 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 --Example 1
 local MyInfo = TweenInfo.new(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out, 1, true, 0.5)
 local Part1, Part2 = workspace.Part1, workspace.Part2
-Code.Tweens(Part1, Part2)(MyInfo){Position = Vector3.new(0, 5, 0)}
+
+local TweenGroup = Code.TweenGroup(Part1, Part2)(MyInfo){Position = Vector3.new(0, 5, 0)}
+TweenGroup:Play()
 
 --Example 2
 local Part1, Part2 = workspace.Part1, workspace.Part2
-Code.Tweens(Part1, Part2)(1, "Bounce", "Out", 1, true, 0.5){Position = Vector3.new(0, 5, 0)}
+local TweenGroup = Code.TweenGroup(Part1, Part2)(1, "Bounce", "Out", 1, true, 0.5){Position = Vector3.new(0, 5, 0)}
+TweenGroup:Play()
 ```
 ___
 </details>
