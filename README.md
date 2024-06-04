@@ -280,30 +280,6 @@ local NumberValue = Code.GetInstance(workspace, "MyNumber", "NumberValue", "Forc
 ___
 </details>
 
-<details><summary>Call</summary>
-
-**Description:** Call multiple functions on a single instance at roughly the same time.
-
-**Setup:** `Code.Call(Instance, Functions)`
-
-**Returns:** All of the potential returns the functions may have given.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Instance | Instance | REQUIRED | The Instance that the functions are being called on. |
-| Functions | table | {} | A list of functions and their accompanying parameters. |
-
-### Usage Example
-
-```lua
-local Part1, Part2 = workspace.Part1, workspace.Part2
-local Result, FullName = Code.Call(Part1, {CanCollideWith = {Part2}, GetFullName = true})
---Result will be a boolean telling us if the 2 parts are able to interact with each other.
---FullName will fetch the full name of said part.
-```
-
-___
-</details>
-
 <details><summary>Destroy</summary>
 
 **Aliases:** Null, Nullify
@@ -333,7 +309,7 @@ ___
 
 **Description:** Advanced Instance searcher.
 
-**Setup:** `Code.Find(Instance, ReturnFirst, CheckDescendants, MaxAmount, FrameSpeed, IgnoreList){Properties}`
+**Setup:** `Code.Find(Instance, ReturnFirst, CheckDescendants, MaxAmount, IgnoreList){Properties}`
 
 **Returns:**
 | Variable | Type | Default | Description |
@@ -342,7 +318,6 @@ ___
 | ReturnFirst | boolean | false | Returns the first instance it can find that matches. |
 | CheckDescendants | boolean | false | If it will search all descendants like :GetAllDescendants() |
 | MaxAmount | number | :infinity: | The number of instances you want to be returned (works only if ReturnFirst is false). |
-| FrameSpeed | number | 0 | A delay between each item searched. Good if you're searching a lot of items and it tends to lag. |
 | IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
 | | | | |
 | Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
@@ -356,12 +331,11 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 local Get = Code.Find(workspace.Model, false, true){Name = "Brick", "Anchored" = true}
 
 --Example 2:
-local Get = Code.Find(workspace.Model,true){Name = "Brick", "Anchored" = true}
+local Get = Code.Find(workspace.Model, true){Name = "Brick", "Anchored" = true}
 
 --Example 3:
-local Get = Code.Find(workspace.Model, false, true, 10, 2){ClassName = "Part"}
+local Get = Code.Find(workspace.Model, false, true, 10){ClassName = "Part"}
     --10 will return 10 items, or less if there aren't 10 that match all of the Properties.
-    --1 means it'll search and add every found item every 2 frames.
 
 --Special Inputs 1:
 local Get = Code.Find(workspace.Model){Name = "...Brick", Transparency = "<1", Color="R"}
@@ -403,7 +377,7 @@ ___
 
 **Description:** Combination of the Find and Change functions.
 
-**Setup:** `Code.FindChange(Instance, ReturnFirst, CheckDescendants, MaxAmount, FrameSpeed, IgnoreList){HasProperties}{ChangeProperties}`
+**Setup:** `Code.FindChange(Instance, ReturnFirst, CheckDescendants, MaxAmount, IgnoreList){HasProperties}{ChangeProperties}`
 
 **Returns:** The Instances that were found and changed, or false if not.
 | Variable | Type | Default | Description |
@@ -412,7 +386,6 @@ ___
 | ReturnFirst | boolean | false | Returns the first instance it can find that matches. |
 | CheckDescendants | boolean | false | If it will search all descendants like :GetAllDescendants() |
 | MaxAmount | number | :infinity: | The number of instances you want to be returned (works only if ReturnFirst is false). |
-| FrameSpeed | number | 0 | A delay between each item searched. Good if you're searching a lot of items and it tends to lag. |
 | IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
 | | | | |
 | HasProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
@@ -436,7 +409,7 @@ ___
 
 **Description:** Combination of the Find and Destroy functions.
 
-**Setup:** `Code.FindDestroy(Instance, CheckDescendants, MaxAmount, FrameSpeed, IgnoreList){HasProperties}`
+**Setup:** `Code.FindDestroy(Instance, CheckDescendants, MaxAmount, IgnoreList){HasProperties}`
 
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
@@ -444,7 +417,6 @@ ___
 | Instance | Instance | REQUIRED | Where to look. |
 | CheckDescendants | boolean | false | If it will search all descendants like :GetAllDescendants() |
 | MaxAmount | number | :infinity: | The number of instances you want to be destroyed. |
-| FrameSpeed | number | 0 | A delay between each item searched. Good if you're searching a lot of items and it tends to lag. |
 | IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
 | | | | |
 | HasProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
@@ -491,33 +463,6 @@ local Mesh, Texture = Code.FindAllChildren(workspace, false, "PartA.Mesh", "Part
 --Example 3:
 local PartA, PartB, PartC = Code.FindAllChildren(workspace, true, "PartA", "PartB", "PartC")
 --Will return the instances if they exist anywhere in the game under workspace.
-```
-
-___
-</details>
-
-<details><summary>IsPartOf</summary>
-
-**Description:** Checks if an Instance is a descendant of another Instance or of a certain type of Instance.
-
-**Setup:** `Code.IsPartOf(Instance, Tuple, MaxReturn)`
-
-**Returns:** The Instance that was found, or `nil` if it managed to hit **game** before finding anything or couldn't be found within the max amount of parents requested by the Number value.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Instance | Instance | REQUIRED | The instance you want to check if it's a part of something. |
-| Tuple | Instance / string | REQUIRED | The ClassName or Instance you're looking for. |
-| MaxReturn | number | :infinity: | The amount of parents it will check. |
-
-### Usage Example
-
-```lua
---Let's assume you set the Part variable already.
-local PartInFolder = Code.IsPartOf(Part, "Folder")
---Will return either the Folder Instance we're looking for if it exists or nil if it doesn't.
---Let's assume you already have Part1 and Part2 set.
-local Partception = Code.IsPartOf(Part1, Part2, 2)
---Will return the 2nd part if Part1 is no more than 2 descendants down, otherwise nil.
 ```
 
 ___
@@ -1506,24 +1451,11 @@ This list is specifically for the functions where changing the properties of an 
 | **"<#, #, #, #, #, #"** | Value | CFrame | Basically acts as the **~** and then applies the **@** changes. First three #'s affect the movement and the other three affect the rotation. | {CFrame = "<0, 5, 0, 0, 45, 0"} |
 | **">#, #, #, #, #, #"** | Value | CFrame | Basically acts as the **@** and then applies the **~** changes. First three #'s affect the movement and the other three affect the rotation. | {CFrame = ">0, 5, 0, 0, 45, 0"} |
 
-### Expanded Examples
-
-```lua
---Function
---Moves each part in your PartTable 5 studs up independently of each other and their rotation.
-function Func(Part)
-return Part.CFrame:ToWorldSpace(CFrame.new(0, 5, 0))
-end
-
-Code.Change(PartTable){CFrame = Func}
-```
-
 ### On Searching Values
 
 | Name | Type | Effects | Description | Example |
 | --- | --- | --- | --- | --- |
 | IsA | Property Name | Instances | Works just like **Part:IsA("BasePart"). | {IsA = "BasePart"} |
-| IsPartOf | Property Name | Instances | Works with this module's **IsPartOf** function, though requires a slightly different setup. | See [Expanded Examples](#expanded-examples-1) for this instance. |
 | Attribute | Property Name | Attributes | Looks for 1 attribute to match to. | {Attribute = {"Attribute Name", DesiredValue} |
 | HasTag | Property Name | Tags | Checks if the given tag is present | {HasTag = "Tag1} |
 | ">#" | Value | Numbers | Detects anything greater than the **#** in its place. | {Transparency = ">0.5"} |
@@ -1541,17 +1473,6 @@ Code.Change(PartTable){CFrame = Func}
 | "RB" | Value | Color3 | Checks if the color is more **purple** than **green** . | {Color = "RB"} |
 | "...Name" | Value | BrickColor | Checks if the name of the **BrickColor** ends with your input. | {BrickColor = "...red"} |
 | {Value, Value... etc} | Value | Any | You can now set each property to equal a table of values. Basically: If property equals this, or this, or this… etc. | {Transparency = {0, 0.5, 1}} |
-
-### Expanded Examples
-
-```lua
---IsPartOf 
---Returns the first BasePart it finds that is also the direct child of a Folder Instance.
---Check the IsPartOf function of this module to see the general set-up.
-local Get = Code.Find(workspace, true, true){IsA = "BasePart", IsPartOf = {{"Folder", 1}}}
-
-```
-
 </details>
 
 ___
