@@ -1474,8 +1474,3 @@ This list is specifically for the functions where changing the properties of an 
 | "...Name" | Value | BrickColor | Checks if the name of the **BrickColor** ends with your input. | {BrickColor = "...red"} |
 | {Value, Value... etc} | Value | Any | You can now set each property to equal a table of values. Basically: If property equals this, or this, or this… etc. | {Transparency = {0, 0.5, 1}} |
 </details>
-
-___
-If there is any misinformation with the functions on here, or you believe that something needs more clarification, please let me know back on the DevForum post.
-
-Also, feel free to comment if you have **ideas** for any new functions that I should add that you believe would be useful.
