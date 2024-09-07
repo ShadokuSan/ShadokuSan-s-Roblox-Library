@@ -15,10 +15,10 @@ ___
 
 Simply use **require(3165359492)** or insert the module manually to use it (but don't forget that requiring a ModuleScript via an ID doesn't work in LocalScripts).
 
-For the sake of the examples in the functions list below, let's assume **Code** is the variable used:
+For the sake of the examples in the functions list below, let's assume **ShadLibrary** is the variable used:
 
 ```lua
-local Code = require(3165359492)
+local ShadLibrary = require(3165359492)
 ```
 
 ___
@@ -34,7 +34,7 @@ ___
 
 ### Formulas
 
-This is a table that hosts multiple semi-commonly used formulas, put into function form. Followed by, `Code.Formulas.NameHere`
+This is a table that hosts multiple semi-commonly used formulas, put into function form. Followed by, `ShadLibrary.Formulas.NameHere`
 
 | Forumla Name | Format | Description |
 | --- | --- | --- |
@@ -59,7 +59,7 @@ This is a table that hosts multiple semi-commonly used formulas, put into functi
 
 **Description:** Customized "Instance.new" function that allows you to edit multiple properties at once.
 
-**Setup:** `Code.new("InstanceName", Parent, ParentFirst){Properties}`
+**Setup:** `ShadLibrary.new("InstanceName", Parent, ParentFirst){ChangeFields}`
 
 **Returns:** The new Instance that was created.
 | Variable | Type | Default | Description |
@@ -68,21 +68,30 @@ This is a table that hosts multiple semi-commonly used formulas, put into functi
 | Parent | Instance | REQUIRED | Where this instance will be parented under. Occurs after all other properties are set. |
 | ParentFirst | boolean | false | Will set the parent before all other properties instead. |
 | | | | |
-| Properties | table | {} | The properties of the instance you're creating. |
+| [ChangeFields](#changefields-setup) | table | REQUIRED | The properties of the instance you're creating. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
 ### Usage Example
 
 ```lua
---Simply make a new part that will be parented to the workspace.
-local Part = Code.new('Part', workspace){Name = "TestPart", Position = Vector3.new(0, 5, 6), Anchored = true}
+--Example 1:
+--Making a new part that has its Name, Position and Anchored property set, then parented to the workspace
+local Part = ShadLibrary.new('Part', workspace){
+		properties = {
+		Name = "TestPart",
+		Position = Vector3.new(0, 5, 6),
+		Anchored = true
+	}
+}
 
---Another part is made, but is parented under the workspace before the properties are set.
-local Part = Code.new('Part', workspace, true){Name = "TestPart", Position = Vector3.new(0, 5, 6), Anchored = true}
-
---Special Input: Same | We'll make this part have the reflectance and transparency property set to 0.5
-local Part = Code.new("Part", workspace){Name = "TestPart", Same = {0.5, "Transparency", "Reflectance"}}
+--Example 2:
+--Same as Example 1 except the part is parented BEFORE the property changes (though you shouldn't do this)
+local Part = ShadLibrary.new('Part', workspace, true){
+	Name = "TestPart",
+	Position = Vector3.new(0, 5, 6),
+	Anchored = true
+}
 ```
 
 ___
@@ -92,59 +101,131 @@ ___
 
 **Description:** Change multiple properties of 1 or more Instances at once.
 
-**Setup:** `Code.Change(Instances...){Properties}`
+**Setup:** `ShadLibrary.Change(Instances...){ChangeFields}`
 
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | Instances | Instance / {Instance...} | REQUIRED | The instance(s) that you wish to edit. |
 | | | | |
-| Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you're editing. |
+| [ChangeFields](#changefields-setup) | table | REQUIRED | A dictionary of the properties/attributes of the instance(s) you're editing. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
+
+### ChangeFields Setup
+```lua
+ChangeFields<autoFill> = {
+	properties: autoFill & {
+		[string]: any,
+		Sides: SurfaceType
+	},
+	attributes: {[string]: any?},
+	userFunctions: {(autoFill) -> nil}
+}
+```
 
 ### Usage Example
 
 ```lua
 --Example 1:
-Code.Change(Part){Color = Color3.new(1, 5, 2), CanCollide = false}
+--Changes a part under the workspace to be light blue and noncollidable
+ShadLibrary.Change(workspace.Part){
+	properties = {
+		Color = Color3.fromRGB(0, 170, 255),
+		CanCollide = false
+	}
+}
 
 --Example 2:
-Code.Change(BoolValue1, BoolValue2, BoolValue3){Value = false, Parent = workspace}
+--Changes multiple BoolValue's value to be false and parents them to the workspace
+ShadLibrary.Change(BoolValue1, BoolValue2, BoolValue3){
+	properties = {
+		Value = false,
+		Parent = workspace
+	}
+}
+
+--Example 3:
+--Changes the attributes of a part under the workspace
+ShadLibrary.Change(workspace.Part){
+	attributes = {
+		testNumber = 5,
+		testBoolean = false
+	}
+}
+
+--Example 4:
+--Changes all parts in a folder named PartFolder to have their names and anchored properties changed
+ShadLibrary.Change(workspace.PartFolder:GetChildren()){
+	userFunctions = {
+		function(part: BasePart)
+			part.Name = "TestPart"
+			part.Anchored = false
+		end,
+	}
+}
 
 --Special Inputs 1:
-Code.Change(BoolValue1, BoolValue2){Value = "not"}
-    --Returns their opposite values for each one.
+--Sets the value to the opposite of what it currently is
+ShadLibrary.Change(BoolValue){
+	properties = {
+		Value = "not"
+	}
+}
 
 --Special Inputs 2:
-Code.Change(NumberValue1, NumberValue2){Value = "+5"}
-    --Adds 5 to each number value.
-
---Special Inputs 3:
-Code.Change(NumberValue1, NumberValue2){Same = {0.5, "Transparency", "Reflectance"}}
-    --Makes their transparency and reflectance values 0.5.
+--Adds 5 onto multiple NumberValue's values
+ShadLibrary.Change(NumberValue1, NumberValue2){
+	properties = {
+		Value = "+5"
+	}
+}
 
 --Special Inputs 4:
-Code.Change(PartTable){Position = "~0, 5, 0"}
-    --Moves each part in your PartTable 5 studs up independently of each other.
+--Assume the variable PartTable is defined as an array of BaseParts
+--Moves each part in your PartTable 5 studs up independently of each other
+ShadLibrary.Change(PartTable){
+	properties = {
+		Position = "~0, 5, 0"
+	}
+}
 
 --Special Inputs 5:
-Code.Change(PartTable){CFrame = "~0, 5, 0"}
-    --Moves each part in your PartTable 5 studs up relatively via CFrame:ToWorldSpace.
+--Assume the variable PartTable is defined as an array of BaseParts
+--Moves each part in your PartTable 5 studs up relatively via CFrame:ToWorldSpace
+ShadLibrary.Change(PartTable){
+	properties = {
+		CFrame = "~0, 5, 0"
+	}
+}
 
-Code.Change(PartTable){CFrame = "@0, 90, 0"}
-    --Rotates each part 90 degrees on the Y-axis.
+--Rotates each part 90 degrees on the Y-axis
+ShadLibrary.Change(PartTable){
+	properties = {
+		CFrame = "@0, 90, 0"
+	}
+}
 
-Code.Change(PartTable){CFrame = "<0, 5, 0, 0, 90, 0"}
-    --Moves each part in your PartTable 5 studs up relatively via CFrame:ToWorldSpace, and then applies a 90-degree rotation on the Y-Axis. Using > will do the inverse order.
+--Moves each part in your PartTable 5 studs up relatively via CFrame:ToWorldSpace
+--Then applies a 90-degree rotation on the Y-Axis. Using > will do the inverse order.
+ShadLibrary.Change(PartTable){
+	properties = {
+		CFrame = "<0, 5, 0, 0, 90, 0"
+	}
+}
+
 
 --Special Inputs 6:
-function Func(Part)
-return Part.CFrame:ToWorldSpace(CFrame.new(0, 5, 0))
+--Runs your given function over each part, expecting an appropriate value in return
+function exampleFunction(part: BasePart)
+	return part.CFrame:ToWorldSpace(CFrame.new(0, 5, 0))
 end
 
-Code.Change(PartTable){CFrame = Func}
-    --Moves each part in your PartTable 5 studs up independently of each other and their rotation.
+ShadLibrary.Change(PartTable){
+	properties = {
+		CFrame = exampleFunction
+	}
+}
 ```
 
 ___
@@ -156,7 +237,7 @@ ___
 
 **Description:** Clone an item and edit its properties at the same time.
 
-**Setup:** `Code.Clone(Item, SameParent, ParentFirst){Properties}`
+**Setup:** `ShadLibrary.Clone(Item, SameParent, ParentFirst){ChangeFields}`
 
 **Returns:** The clone of the instance.
 | Variable | Type | Default | Description |
@@ -165,7 +246,7 @@ ___
 | SameParent | boolean | false | Determines if the cloned instance is parented under the same parent as the original. |
 | ParentFirst | boolean | false |  Determines if the cloned instance is parented before<sub>(true)</sub> the property changes or after.<sub>(false)</sub> Only takes effect if SameParent is set to true. |
 | | | | |
-| Properties | table | {} | The properties/attributes of the instance you're cloning; if you're changing any. |
+| [ChangeFields](#changefields-setup) | table | REQUIRED | The properties/attributes of the instance you're cloning; if you're changing any. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
@@ -173,13 +254,23 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 
 ```lua
 --Example 1: 
-local Brick = Code.Clone(workspace.Brick, true){Name = "Cloned", Position = Vector3.new(0, 10, 0)}
+--Clones a part in the workspace then sets it to the same parent
+local Brick = ShadLibrary.Clone(workspace.Brick, true){
+	properties = {
+		Name = "Cloned",
+		Position = Vector3.new(0, 10, 0)
+	}
+}
 
 --Example 2:
-local Brick = Code.Clone(workspace.Brick){Name = "Cloned", Position = Vector3.new(0, 10, 0), Parent = workspace}
-
---Special Input: Same | We'll make this part unanchored and noncollidable
-local Brick = Code.Clone(workspace.Brick){Name = "Cloned", Same = {false, "Anchored", "CanCollide"}}
+--Clones a part in the workspace with a new parent
+local Brick = ShadLibrary.Clone(workspace.Brick){
+	properties = {
+		Name = "Cloned",
+		Position = Vector3.new(0, 10, 0),
+		Parent = workspace
+	}
+}
 ```
 
 ___
@@ -189,7 +280,7 @@ ___
 
 **Description:** Replace an Instance by creating a new one or cloning another in its place.
 
-**Setup:** `Code.Replace(Replacee, Replacement, SameParent, ParentFirst){Properties}`
+**Setup:** `ShadLibrary.Replace(Replacee, Replacement, SameParent, ParentFirst){ChangeFields}`
 
 **Returns:** The replacement instance.
 | Variable | Type | Default | Description |
@@ -199,7 +290,7 @@ ___
 | SameParent | boolean | false | Determines if the cloned instance is parented under the same parent as the original. |
 | ParentFirst | boolean | false | Determines if the cloned instance is parented before<sub>(true)</sub> the property changes or after.<sub>(false)</sub> Only takes effect if SameParent is set to true. |
 | | | | |
-| Properties | table | {} | The properties/attributes of the instance you're using as the replacement; if you're changing any. |
+| [ChangeFields](#changefields-setup) | table | REQUIRED | The properties/attributes of the instance you're using as the replacement; if you're changing any. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
@@ -207,12 +298,22 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 
 ```lua
 --Example 1: 
-local Brick = Code.Replace(workspace.Brick1, workspace.Brick2, true){Name = "Brick3"}
-    --Destroys Brick1, clones Brick2 and names it Brick3. Variable Brick becomes Brick3. Brick3 gets parented to the same parent as Brick1.
+--Destroys Brick1, clones Brick2 and names it Brick3. Variable Brick becomes Brick3. Brick3 gets parented to the same parent as Brick1
+local Brick = ShadLibrary.Replace(workspace.Brick1, workspace.Brick2, true){
+	properties = {
+		Name = "Brick3"
+	}
+}
+
 
 --Example 2:
-local Brick = Code.Replace(workspace.Brick1, "Part"){Name = "Brick2", CFrame = workspace.Brick1.CFrame}
-    --Destroys Brick1, makes a new part that gets named Brick2, and makes the CFrame the same.
+--Destroys Brick1, makes a new part that gets named Brick2, and makes the CFrame the same
+local Brick = ShadLibrary.Replace(workspace.Brick1, "Part"){
+	properties = {
+		Name = "Brick2",
+		CFrame = workspace.Brick1.CFrame
+	}
+}
 ```
 
 ___
@@ -222,7 +323,7 @@ ___
 
 **Description:** Searches for an Instance or creates a new one if it doesn't yet exist.
 
-**Setup:** `Code.GetInstance(Where, Name, ClassName, PropertyType){Properties}`
+**Setup:** `ShadLibrary.GetInstance(Where, Name, ClassName, PropertyType){ChangeFields}`
 
 **Returns:** The Instance that gets found or the newly created one.
 | Variable | Type | Default | Description |
@@ -232,7 +333,7 @@ ___
 | ClassName | string | REQUIRED | The ClassName of the Instance you're looking for. Also acts as the new Instance's class if one needs to be made. |
 | PropertyType | boolean / string | false | Determines the behavior of the search function regarding the Properties table. See below for more details. |
 | | | | |
-| Properties | table | {} | The properties of the new Instance that gets made if needed. |
+| [ChangeFields](#changefields-setup) | table | REQUIRED | The properties of the new Instance that gets made if needed. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) section for details on how to use them.
 
@@ -248,8 +349,8 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 
 ```lua
 --Example 1: 
-local RemoteEvent = Code.GetInstance(game:GetService("ReplicatedStorage"), "MyRemote", "RemoteEvent", false){}
---[[ Searches the game's ReplicatedStorage for a RemoteEvent named "MyRemote".
+--[[
+    Searches the game's ReplicatedStorage for a RemoteEvent named "MyRemote".
 
     Since the 4th variable is false and a RemoteEvent doesn't have any other notable properties,
     the following Properties table here is left empty since it does nothing in this situation.
@@ -261,8 +362,9 @@ local RemoteEvent = Code.GetInstance(game:GetService("ReplicatedStorage"), "MyRe
     other property is set.
 ]]
 
+local RemoteEvent = ShadLibrary.GetInstance(game:GetService("ReplicatedStorage"), "MyRemote", "RemoteEvent", false){}
+
 --Example 2:
-local NumberValue = Code.GetInstance(workspace, "MyNumber", "NumberValue", "Match"){Value = 5}
 --[[ Searches the Workspace for a NumberValue named "MyNumber" and also has the value of 5 since the
     4th variable is set to "Match"
 
@@ -270,11 +372,22 @@ local NumberValue = Code.GetInstance(workspace, "MyNumber", "NumberValue", "Matc
     check if the NumberValue had a value of 5 but would still make a new NumberValue that does have a value of 5.
 ]]
 
+local NumberValue = ShadLibrary.GetInstance(workspace, "MyNumber", "NumberValue", "Match"){
+	properties = {
+		Value = 5
+	}
+}
+
 --Example 3:
-local NumberValue = Code.GetInstance(workspace, "MyNumber", "NumberValue", "Force"){Value = 5}
 --[[ Searches the Workspace for a NumberValue named "MyNumber" and will set its value to 5 since the
     4th variable was set to "Force"
 ]]
+
+local NumberValue = ShadLibrary.GetInstance(workspace, "MyNumber", "NumberValue", "Force"){
+	properties = {
+		Value = 5
+	}
+}
 ```
 
 ___
@@ -286,20 +399,18 @@ ___
 
 **Description:** Destroys a bunch of Instances at once.
 
-**Setup:** `Code.Destroy(Instances...)`
+**Setup:** `ShadLibrary.Destroy(Tuple...)`
 
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
-| Instances | Instance / {Instance...} | REQUIRED | The Instance(s) that you're deleting. |
+| Tuple | Instance / Thread / Connection | REQUIRED | The Instance(s) that you're deleting, threads you're cancelling, or connections you're severing. |
 
 ### Usage Example
 
 ```lua
-Code.Destroy(workspace.Brick1, workspace.Brick2, workspace.Brick3)
+ShadLibrary.Destroy(workspace.Brick1, workspace.Brick2, workspace.Brick3)
 ```
-
-**Note:** Even if the item for some reason doesn't exist, it will not error and not stop the script it's used in.
 ___
 </details>
 
@@ -309,125 +420,129 @@ ___
 
 **Description:** Advanced Instance searcher.
 
-**Setup:** `Code.Find(Instance, ReturnFirst, CheckDescendants, MaxAmount, IgnoreList){Properties}`
+**Setup 1:** `ShadLibrary.Find(Instance, CheckDescendants, MaxAmount, FollowFunction, IgnoreList){SearchFields}`
 
-**Returns:**
+**Setup 2:** `ShadLibrary.Find(Tag, MaxAmount, FollowFunction, IgnoreList){SearchFields}`
+
+**Setup 3:** `ShadLibrary.Find(..., FollowFunction = "Change", ...){SearchFields}{ChangeFields}`
+
+**Returns:** The instance(s) found or none if none were found, or none if FollowFunction was set to "Destroy"
+
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
-| Instance | Instance | REQUIRED | Where to look. |
-| ReturnFirst | boolean | false | Returns the first instance it can find that matches. |
-| CheckDescendants | boolean | false | If it will search all descendants like :GetAllDescendants() |
-| MaxAmount | number | :infinity: | The number of instances you want to be returned (works only if ReturnFirst is false). |
-| IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
+| Instance¹ | Instance | REQUIRED | Where to look. |
+| CheckDescendants¹ | boolean | false | If it will search all descendants like :GetAllDescendants() |
+| Tag² | string | REQUIRED | Looks through all instances with this tag. |
+| MaxAmount | number / false | false | The number of instances you want to be returned. Set to false to have an infinite amount. |
+| FollowFunction | string / false | false | Determines if there is a follow-up function after finding the desired instance. Can be false for none, "Change" to allow you to change the instance(s) found, or "Destroy" to destroy all found instances. |
+| IgnoreList | table | {} |  An array of Instances that you want ignored, including its children. |
 | | | | |
-| Properties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
+| [SearchFields](#searchfields-setup) | table | REQUIRED | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
+| | | | |
+| [ChangeFields](#changefields-setup)³ | table | REQUIRED if FollowFunction is set to "Change" | What changes are to be made to the instance(s) found. |
 
 This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#on-searching-values) section for details on how to use them.
+
+### SearchFields Setup
+```lua
+SearchFields = {
+	properties: {[string]: any | {any}},
+	attributes: {[string]: any | {any}},
+	functions: {[string]: {
+		arguments: any? | {any?},
+		interpretFunction: ((...any?) -> boolean)?
+	}},
+	userFunctions: {(instance: Instance) -> boolean}
+}
+```
+
 
 ### Usage Example
 
 ```lua
 --Example 1:
-local Get = Code.Find(workspace.Model, false, true){Name = "Brick", "Anchored" = true}
+--Returns the first Instance named "Brick" that is anchored
+local Get = ShadLibrary.Find(workspace.Model, false, 1){
+	properties = {
+		Name = "Brick",
+		Anchored = true
+	}
+}
 
 --Example 2:
-local Get = Code.Find(workspace.Model, true){Name = "Brick", "Anchored" = true}
+--Returns all Instances named "Brick" that are anchored
+local Get = ShadLibrary.Find(workspace.Model, true, false){
+	properties = {
+		Name = "Brick",
+		Anchored = true
+	}
+}
 
 --Example 3:
-local Get = Code.Find(workspace.Model, false, true, 10){ClassName = "Part"}
-    --10 will return 10 items, or less if there aren't 10 that match all of the Properties.
+--Returns a maximum of 10 Parts that has an attribute named "testAttribute" set to true
+local Get = ShadLibrary.Find(workspace.Model, false, 10){
+	properties = {
+		ClassName = "Part"
+	},
+	attributes = {
+		testAttribute = true
+	}
+}
+
+--Example 4:
+--Returns any BaseParts found in the workspace
+local Get = ShadLibrary.Find(workspace){
+	functions = {
+		IsA = {
+			arguments = "BasePart"
+		}
+	}
+}
+
+--Example 5:
+--Returns anything that is not a BasePart in the workspace
+local Get = ShadLibrary.Find(workspace){
+	functions = {
+		IsA = {
+			arguments = "BasePart",
+			interpretFunction = function(isBasePart: boolean)
+				if isBasePart then
+					return false
+				end
+				
+				return true
+			end,
+		}
+	}
+}
 
 --Special Inputs 1:
-local Get = Code.Find(workspace.Model){Name = "...Brick", Transparency = "<1", Color="R"}
-    --returns any parts that have names that end with "Brick",
-    --has a transparency less than 1, and their Color value is dominantly red.
+--Returns any Instance that has a name ending in "Brick," has a transparency that is less than 1 and their color is dominantly red
+local Get = ShadLibrary.Find(workspace.Model){
+	properties = {
+		Name = "...Brick",
+		Transparency = "<1",
+		Color="R"
+	}
+}
 
 --Special Inputs 2:
-local Get = Code.Find(workspace.Model){Name = "Brick...", Reflectance = ">=0.5", BrickColor = "...red"}
-    --returns any parts that have names that start with "Brick",
-    --has their reflectance set to 0.5 or greater,
-    --and their BrickColor is any BrickColor ending in "red".
+--Returns any Instance that has a name starting with "Brick," has reflectance set to at least 0.5, and their BrickColor name ends in "red"
+local Get = ShadLibrary.Find(workspace.Model){
+	properties = {
+		Name = "Brick...",
+		Reflectance = ">=0.5",
+		BrickColor = "...red"
+	}
+}
 
 --Special Inputs 3:
-local Get = Code.Find(workspace.Model, false, true){IsA = "BasePart"}
-    --returns all instances that are classified as base parts.
-
---Special Inputs 4:
-local Get = Code.Find(workspace.Model, false, true){Name = {"Test1", "Test2"}}
-    --returns all parts that have their names as either Test1 or Test2.
-
---Special Inputs 5:
-local Get = Code.Find(workspace, true, true){IsA = "BasePart", IsPartOf = {{"Folder", 1}}}
-    --returns the first BasePart it finds that is also the direct child of a Folder Instance.
-    --Check the IsPartOf function of this module to see the general setup.
-
---Special Inputs 6:
-local Get = Code.Find(workspace.true, false){IsA = "BasePart", ["Position.X"] = "<10"}
-    --returns all parts in the workspace with a position of X that is less than 10
-
---Special Inputs 7:
-local Get = Code.Find(workspace.true, false){IsA = "BasePart", Attribute = {"Test", 5}}
-    --returns all parts in the workspace that has an attribute named "Test" that are also equal to 5
-```
-
-___
-</details>
-
-<details><summary>FindChange</summary>
-
-**Description:** Combination of the Find and Change functions.
-
-**Setup:** `Code.FindChange(Instance, ReturnFirst, CheckDescendants, MaxAmount, IgnoreList){HasProperties}{ChangeProperties}`
-
-**Returns:** The Instances that were found and changed, or false if not.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Instance | Instance | REQUIRED | Where to look. |
-| ReturnFirst | boolean | false | Returns the first instance it can find that matches. |
-| CheckDescendants | boolean | false | If it will search all descendants like :GetAllDescendants() |
-| MaxAmount | number | :infinity: | The number of instances you want to be returned (works only if ReturnFirst is false). |
-| IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
-| | | | |
-| HasProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
-| | | | |
-| ChangeProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re editing. |
-
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Changing Values](#on-changing-values) and [On Finding Values](#on-searching-values) sections for details on how to use them.
-
-### Usage Example
-
-```lua
-local Get = Code.FindChange(workspace, true, false){["Position.X"] = "<=-0.5"}{Material = Enum.Material.Neon}
-print("Got:", Get)
---Will find parts that have a position value of X that is less than or equal to -0.5, then changes all of their materials to neon. Then returns a list of the changed parts.
-```
-
-___
-</details>
-
-<details><summary>FindDestroy</summary>
-
-**Description:** Combination of the Find and Destroy functions.
-
-**Setup:** `Code.FindDestroy(Instance, CheckDescendants, MaxAmount, IgnoreList){HasProperties}`
-
-**Returns:** Nothing.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Instance | Instance | REQUIRED | Where to look. |
-| CheckDescendants | boolean | false | If it will search all descendants like :GetAllDescendants() |
-| MaxAmount | number | :infinity: | The number of instances you want to be destroyed. |
-| IgnoreList | table | {} |  An array of Instance(s) you want ignored, including its children. |
-| | | | |
-| HasProperties | table | {} | A dictionary of the properties/attributes of the instance(s) you’re looking for. |
-
-This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure to check the [On Finding Values](#on-searching-values) section for details on how to use them.
-
-### Usage Example
-
-```lua
-Code.FindDestroy(workspace, false, 5){["Position.X"] = "<1"}
---Will find the first 5 parts that have a position value of X that is less than 1, then destroys them.
+--Returns any Instance that has their name as Test1 or Test2
+local Get = ShadLibrary.Find(workspace.Model, false, true){
+	properties = {
+		Name = {"Test1", "Test2"}
+	}
+}
 ```
 
 ___
@@ -439,7 +554,7 @@ ___
 
 **Description:** Acts like Instance:FindFirstChild() where you can search for multiple instances.
 
-**Setup:** `Code.FindAllChildren(Instance, Recursive, Items...)`
+**Setup:** `ShadLibrary.FindAllChildren(Instance, Recursive, Items...)`
 
 **Returns:** The Instances that were found, or false if not.
 | Variable | Type | Default | Description |
@@ -452,44 +567,17 @@ ___
 
 ```lua
 --Example 1:
-local PartA, PartB, PartC = Code.FindAllChildren(workspace, false, "PartA", "PartB", "PartC")
+local PartA, PartB, PartC = ShadLibrary.FindAllChildren(workspace, false, "PartA", "PartB", "PartC")
 --Will return either the Instances that has those names or false if not.
 --Could look like: PartA, false, PartC if there is no PartB
 
 --Example 2:
-local Mesh, Texture = Code.FindAllChildren(workspace, false, "PartA.Mesh", "PartB.Texture")
+local Mesh, Texture = ShadLibrary.FindAllChildren(workspace, false, "PartA.Mesh", "PartB.Texture")
 --Is capable of searching through multiple instances downwards.
 
 --Example 3:
-local PartA, PartB, PartC = Code.FindAllChildren(workspace, true, "PartA", "PartB", "PartC")
+local PartA, PartB, PartC = ShadLibrary.FindAllChildren(workspace, true, "PartA", "PartB", "PartC")
 --Will return the instances if they exist anywhere in the game under workspace.
-```
-
-___
-</details>
-
-<details><summary>GetPartOf</summary>
-
-**Description:** Fetches a property from an array of instances.
-
-**Setup:** `Code.GetPartOf(Instances, Property)`
-
-**Returns:** A table of the given property.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Instances | {Instance...} | {} | An array of Instances you want to check through. |
-| Property | string | REQUIRED | The property you want returned. Can also be set to return a secondary value if one exists (like Vector3 with X, Y, or Z). |
-
-### Usage Example
-
-```lua
---Example 1: Let's assume Parts is a folder under the workspace holding some bricks.
-local Transparencies = Code.GetPartOf(Parts:GetChildren(), "Transparency")
-print(unpack(Transparencies))
-
---Example 2: Let's  all of the Y positions of each part now.
-local Y = Code.GetPartOf(Parts:GetChildren(), "Position.Y")
-print(unpack(Y))
 ```
 
 ___
@@ -501,7 +589,7 @@ ___
 
 **Description:** [A solution to checking in long paths without needing the overuse of :WaitForChild a dozen times.](https://devforum.roblox.com/t/554586)
 
-**Setup:** `Code.WaitForPath(Instance, MaxWaitTime, Path)`
+**Setup:** `ShadLibrary.WaitForPath(Instance, MaxWaitTime, Path)`
 
 **Returns:** The Instance(s) you're looking for, or false if you exceed the maximum wait time and found nothing.
 | Variable | Type | Default | Description |
@@ -518,11 +606,11 @@ If before the name of the variable an ```*asterisk``` is placed anywhere in the 
 ```lua
 --Let's assume that this is a LocalScript for some UI.
 local UI = script.Parent
-local Button = Code.WaitForPath(UI, 20, "MainFrame.Something.SomethingElse.Button1")
+local Button = ShadLibrary.WaitForPath(UI, 20, "MainFrame.Something.SomethingElse.Button1")
 --Will return "Button1" that would be down the path MainFrame.Something.SomethingElse
 
 --If we also wanted to save MainFrame but don't want to repeat it:
-local MainFrame, Button = Code.WaitForPath(UI, 20, "*MainFrame.Something.SomethingElse.Button1")
+local MainFrame, Button = ShadLibrary.WaitForPath(UI, 20, "*MainFrame.Something.SomethingElse.Button1")
 --The asterisk before the name tells the function to also save that instance.
 ```
 
@@ -535,7 +623,7 @@ ___
 
 **Description:** Allows you to call :WaitForChild() on multiple Instances under the same parent at the same time.
 
-**Setup:** `Code.WaitForChildren(Instance, MaxWait, Items...)`
+**Setup:** `ShadLibrary.WaitForChildren(Instance, MaxWait, Items...)`
 
 **Returns:** The Instance(s) you're looking for. Will return false for each Instance that fails to be found within the time you set.
 | Variable | Type | Default | Description |
@@ -553,49 +641,17 @@ If before the name of the variable an ```*asterisk``` is placed anywhere in the 
 ----Example 1
 --Let's assume that this is a LocalScript for some UI.
 local UI = script.Parent
-local Frame1, Frame2, Button = Code.WaitForChildren(UI, 10, "Frame1", "Frame2", "Button")
+local Frame1, Frame2, Button = ShadLibrary.WaitForChildren(UI, 10, "Frame1", "Frame2", "Button")
     --Will return the Instances that are within the UI, or false for each Instance
     --that cannot be found within 10 seconds.
 
 ----Example 2
-local TextureA, TextureB = Code.WFC(workspace, 10, "Brick1.Decal", "Brick2.Texture")
+local TextureA, TextureB = ShadLibrary.WFC(workspace, 10, "Brick1.Decal", "Brick2.Texture")
     --Will return the decal/texture found, or false if not there.
 
 ----Example 3
-local Brick1, TextureA, TextureB = Code.WFC(workspace, 10, "*Brick1.Decal", "Brick2.Texture")
+local Brick1, TextureA, TextureB = ShadLibrary.WFC(workspace, 10, "*Brick1.Decal", "Brick2.Texture")
     --Will return the first brick, then the decal/texture found, or false if not there.
-```
-
-___
-</details>
-
-<details><summary>Fetch</summary>
-
-**Description:** Fetches multiple properties/values from an instance/table.
-
-**Setup:** `Code.Fetch(Input, Variables...)`
-
-**Returns:** The variable(s) you're looking for. If the variable cannot be found or is equal to `nil` then it will be overlooked.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Input | Instance / Dictionary | REQUIRED | What should be searched through. Anything that has a variable attached to it should work. |
-| Variables | string | REQUIRED | To be fetched from the input. |
-
-**Note:**
-If a property is followed by ` > ` then it will search inside this property instead. Must have a space before and after this symbol.
-
-If after a `>` there are any commas, these will be taken into consideration separately.
-
-### Usage Example
-
-```lua
-----Example 1
-local Color, Size = Code.Fetch(workspace.Baseplate, "Color", "Size")
-    --Can be followed by as many variables as necessary as long as the input has these things.
-
-----Example 2
-local Color, SizeX, SizeY, SizeZ = Code.Fetch(workspace.Baseplate, "Color", "Size > X,Y,Z")
-    --Will return each size axis after getting the part's color.
 ```
 
 ___
@@ -605,7 +661,7 @@ ___
 
 **Description:** Automatically welds (via WeldConstraints) a lot of parts to a singular part.
 
-**Setup:** `Code.WeldTo(Main, WeldParent, UnanchorOthers, BaseParts...)`
+**Setup:** `ShadLibrary.WeldTo(Main, WeldParent, UnanchorOthers, BaseParts...)`
 
 **Returns:** `nil`
 | Variable | Type | Default | Description |
@@ -627,13 +683,13 @@ ___
 ----Example 1
 local Part1, Part2, Part3, Part4 = workspace.Part1, workspace.Part2, workspace.Part3, workspace.Part4 
 
-Code.WeldTo(Part1, Part1, false, Part2, Part3, Part4)
+ShadLibrary.WeldTo(Part1, Part1, false, Part2, Part3, Part4)
     --This will weld Parts 2-4 to Part1. Welds will be parented inside of Part1. Parts 2-4 will not be forcefully unanchored.
 
 ----Example 2
 local Part1, Part2, Part3, Part4 = workspace.Part1, workspace.Part2, workspace.Part3, workspace.Part4 
 
-Code.WeldTo(Part1, workspace, true, Part2, {Part3, Part4})
+ShadLibrary.WeldTo(Part1, workspace, true, Part2, {Part3, Part4})
     --This will weld Parts 2-4 to Part1. Welds will be parented inside of the Workspace. Parts 2-4 will be forcefully unanchored.
 ```
 
@@ -646,7 +702,7 @@ ___
 
 **Description:** Returns a 50/50 chance for a number being positive or negative.
 
-**Setup:** `Code.PN(Number)`
+**Setup:** `ShadLibrary.PN(Number)`
 
 **Returns:** The number generated, or ±1 if no number was set.
 | Variable | Type | Default | Description |
@@ -657,10 +713,10 @@ ___
 
 ```lua
 --Example 1:
-local Number = Code.PN(5)   --Returns either 5 or -5
+local Number = ShadLibrary.PN(5)   --Returns either 5 or -5
 
 --Example 2:
-local Number = Code.PN()   --Returns either 1 or -1
+local Number = ShadLibrary.PN()   --Returns either 1 or -1
 ```
 
 ___
@@ -672,7 +728,7 @@ ___
 
 **Description:** Selects at random whatever you put in the list.
 
-**Setup:** `Code.Rando(Items...)`
+**Setup:** `ShadLibrary.Rando(Items...)`
 
 **Returns:** One of the items you put in the list at random.
 | Variable | Type | Default | Description |
@@ -683,10 +739,10 @@ ___
 
 ```lua
 --Example 1:
-local Number = Code.Rando(1, 10, 30, -6, 1000)
+local Number = ShadLibrary.Rando(1, 10, 30, -6, 1000)
 
 --Example 2:
-local Chosen = Code.Rando("Hello, world!", 96, workspace.Brick)
+local Chosen = ShadLibrary.Rando("Hello, world!", 96, workspace.Brick)
 ```
 
 ___
@@ -696,7 +752,7 @@ ___
 
 **Description:** Fetches one or more services.
 
-**Setup:** `Code.Service(Service...)`
+**Setup:** `ShadLibrary.Service(Service...)`
 
 **Returns:** The service(s) that you requested.
 | Variable | Type | Default | Description |
@@ -707,10 +763,10 @@ ___
 
 ```lua
 --Example 1:
-local TweenService = Code.Service'TweenService'
+local TweenService = ShadLibrary.Service'TweenService'
 
 --Example 2:
-local TweenService, RunService, ServerScriptService = Code.Service("TweenService", "RunService", "ServerScriptService")
+local TweenService, RunService, ServerScriptService = ShadLibrary.Service("TweenService", "RunService", "ServerScriptService")
 ```
 
 ___
@@ -720,9 +776,9 @@ ___
 
 **Description:** A simplified method of making a tween.
 
-**Setup 1:** `Code.Tween(Instance, TweenInfo){Properties}`
+**Setup 1:** `ShadLibrary.Tween(Instance, TweenInfo){Properties}`
 
-**Setup 2:** `Code.Tween(Instance, Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
+**Setup 2:** `ShadLibrary.Tween(Instance, Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
 
 **Returns:** The Tween you've created.
 | Variable | Type | Default | Description |
@@ -745,11 +801,11 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 ```lua
 --Example 1:
 local MyInfo = TweenInfo.new(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out, 1, true, 0.5)
-local Tween = Code.Tween(script.Parent, TweenInfo}{Position = script.Parent.Position + Vector3.new(0, 3, 0)}
+local Tween = ShadLibrary.Tween(script.Parent, TweenInfo}{Position = script.Parent.Position + Vector3.new(0, 3, 0)}
 Tween:Play()
 
 --Example 2:
-local Tween = Code.Tween(script.Parent, 1, "Bounce", "Out", 1, true, 0.5}{Position = script.Parent.Position + Vector3.new(0, 3, 0)}
+local Tween = ShadLibrary.Tween(script.Parent, 1, "Bounce", "Out", 1, true, 0.5}{Position = script.Parent.Position + Vector3.new(0, 3, 0)}
 Tween:Play()
 ```
 
@@ -761,7 +817,7 @@ ___
 **Description:** A method for linking multiple tweens together.
 Has limited usage compared to normal tweens. You may do the following: Play, Pause, Cancel, and Destroy. Has no readable properties or events to listen to (maybe will come later?).
 
-**Setup:** `Code.TweenLink(Tweens...)`
+**Setup:** `ShadLibrary.TweenLink(Tweens...)`
 
 **Returns:** MetaTable with the functions **Play**, **Pause**, **Cancel** and **Destroy**.
 | Variable | Type | Default | Description |
@@ -772,8 +828,8 @@ Has limited usage compared to normal tweens. You may do the following: Play, Pau
 
 ```lua
 --Example
-local Tween1 = Code.Tween(workspace.Brick1, TweenInfo.new(1)){Transparency = 1}
-local Tween2 = Code.Tween(workspace.Brick2, TweenInfo.new(1.5)){Transparency = 0.5}
+local Tween1 = ShadLibrary.Tween(workspace.Brick1, TweenInfo.new(1)){Transparency = 1}
+local Tween2 = ShadLibrary.Tween(workspace.Brick2, TweenInfo.new(1.5)){Transparency = 0.5}
 
 local TweenLink = ShadLibrary.TweenLink(Tween1, Tween2)
 
@@ -788,9 +844,9 @@ ___
 
 **Description:** A method for making multiple tweens of the same or similar items.
 
-**Setup 1:** `Code.TweenGroup(Instances...)(TweenInfo){Properties}`
+**Setup 1:** `ShadLibrary.TweenGroup(Instances...)(TweenInfo){Properties}`
 
-**Setup 2:** `Code.TweenGroup(Instances...)(Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
+**Setup 2:** `ShadLibrary.TweenGroup(Instances...)(Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
 
 **Returns:** Essentially makes a **TweenLink**.
 | Variable | Type | Default | Description |
@@ -816,12 +872,12 @@ This function hosts some special inputs<sub>*Not all may apply*</sub>. Make sure
 local MyInfo = TweenInfo.new(1, Enum.EasingStyle.Bounce, Enum.EasingDirection.Out, 1, true, 0.5)
 local Part1, Part2 = workspace.Part1, workspace.Part2
 
-local TweenGroup = Code.TweenGroup(Part1, Part2)(MyInfo){Position = Vector3.new(0, 5, 0)}
+local TweenGroup = ShadLibrary.TweenGroup(Part1, Part2)(MyInfo){Position = Vector3.new(0, 5, 0)}
 TweenGroup:Play()
 
 --Example 2
 local Part1, Part2 = workspace.Part1, workspace.Part2
-local TweenGroup = Code.TweenGroup(Part1, Part2)(1, "Bounce", "Out", 1, true, 0.5){Position = Vector3.new(0, 5, 0)}
+local TweenGroup = ShadLibrary.TweenGroup(Part1, Part2)(1, "Bounce", "Out", 1, true, 0.5){Position = Vector3.new(0, 5, 0)}
 TweenGroup:Play()
 ```
 ___
@@ -833,9 +889,9 @@ ___
 
 **Description:** An experimental method to tween what was previously untweenable.
 
-**Setup 1:** `Code.TweenSequence(Instance, TweenInfo){Properties}`
+**Setup 1:** `ShadLibrary.TweenSequence(Instance, TweenInfo){Properties}`
 
-**Setup 2:** `Code.TweenSequence(Instance, Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
+**Setup 2:** `ShadLibrary.TweenSequence(Instance, Time, Style, Direction, Repeat, Reverses, Delay){Properties}`
 
 **Returns:** A special tween-base made via metatables. Should be able to work just like a normal Tween with the same functions and variables. This includes a new function: **Tween:Destroy()** since this works in a specific way, if you want to clean up a bit, I recommend you use this when not needed anymore.
 | Variable | Type | Default | Description |
@@ -875,7 +931,7 @@ local ChangeTo = ColorSequence.new{
  ColorSequenceKeypoint.new(0.75, Color3.fromRGB(0, 0, 255)),
  ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))}
 
-local Tween = Code.TweenSequence(Beam, 1, "Linear", "InOut", 2, true, 0.5){Color = ChangeTo}
+local Tween = ShadLibrary.TweenSequence(Beam, 1, "Linear", "InOut", 2, true, 0.5){Color = ChangeTo}
 Tween:Play()
 --Should tween any beam's colors to look a bit rainbow-like, revert, and does this a couple of times.
 
@@ -888,7 +944,7 @@ local ChangeTo = NumberSequence.new{
 
 local MyInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 2, true, 0.5)
 
-local Tween = Code.TweenSequence(ParticleEmitter, MyInfo){["~Size"] = ChangeTo}
+local Tween = ShadLibrary.TweenSequence(ParticleEmitter, MyInfo){["~Size"] = ChangeTo}
 Tween:Play()
 Tween.Completed:Wait()
 print("Demo finished!")
@@ -898,39 +954,11 @@ print("Demo finished!")
 ___
 </details>
 
-<details><summary>Tabs</summary>
-
-**Description:** Combines Tables or otherwise into 1 table.
-
-**Setup:** `Code.Tabs(Any)`
-
-**Returns:** The new table with everything inside.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Any | Any | REQUIRED | An array of anything you want to combine. Tables, Strings, Instances, etc. |
-
-### Usage Example
-
-```lua
---Example 1:
-local Tab1, Tab2 = {1, 3, 5}, {2, 4, 6}
-local Tab3 = Code.Tabs(Tab1, Tab2)
-print(unpack(Tab3)) --1 3 5 2 4 6
-
---Example 2:
-local Tab = {1, 2, 3, 4}
-local Tab2 = Code.Tabs("Hi", false, workspace, Tab, "Test")
-print(unpack(Tab2)) --Hi false Workspace 1 2 3 4 Test
-```
-
-___
-</details>
-
 <details><summary>TabClone</summary>
 
 **Description:** Clones a table.
 
-**Setup:** `Code.TabClone(Table)`
+**Setup:** `ShadLibrary.TabClone(Table)`
 
 **Returns:** The new cloned table.
 | Variable | Type | Default | Description |
@@ -941,7 +969,7 @@ ___
 
 ```lua
 local Tab1 = {1, 2, 3, "a", "b", "c"}
-local Tab2 = Code.TabClone(Tab1)
+local Tab2 = ShadLibrary.TabClone(Tab1)
 print(Tab1==Tab2) --false
 ```
 
@@ -952,7 +980,7 @@ ___
 
 **Description:** A quick method for connecting multiple events and instances simultaneously.
 
-**Setup:** `Code.MassConnect(Instances, Events, Function)`
+**Setup:** `ShadLibrary.MassConnect(Instances, Events, Function)`
 
 **Returns:** An array of every new connection made.
 | Variable | Type | Default | Description |
@@ -988,45 +1016,7 @@ function Reader(Part, Event, ...)
     end
 end
 
-Code.MassConnect(Parts:GetChildren(), {"Touched", "Changed"}, Reader)
-```
-
-___
-</details>
-
-<details><summary>MassDisconnect</summary>
-
-**Description:** Disconnects a bunch of connections.
-
-**Setup:** `Code.MassDisconnect(Connections)`
-
-**Returns:** Nothing.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Connections | table | REQUIRED | An array of Connections that you'd like to sever. |
-
-**Note:**
-:warning: It's best to use this after using **MassConnect** when you don't need the connections any more.
-
-### Usage Example
-
-```lua
---Let's assume this is a normal script, and Parts is a folder in the workspace that contains a few blocks.
-function Reader(Part, Event, ...)
-    if Event=="Changed" then
-    print(Part.Name, "was changed! Changed:", ...)
-
-    elseif Event=="Touched" then
-    print(Part.Name, "was touched! Part that hit it:", ...)
-    end
-end
-
-local Connections = Code.MassConnect(Parts:GetChildren(), {"Touched", "Changed"}, Reader)
-
-task.wait(10)
-
-Connections = Code.MassDisconnect(Connections)
---Every connection will be gone, and so is the reference to them.
+ShadLibrary.MassConnect(Parts:GetChildren(), {"Touched", "Changed"}, Reader)
 ```
 
 ___
@@ -1036,7 +1026,7 @@ ___
 
 **Description:** A simple replacement for using multiple "or" statements on the same variable.
 
-**Setup:** `Code.Match(Main, Variables...)`
+**Setup:** `ShadLibrary.Match(Main, Variables...)`
 
 **Returns:** A boolean value; true if the Main variable matches any of the subsequent variables or false if not.
 | Variable | Type | Default | Description |
@@ -1049,7 +1039,7 @@ ___
 ```lua
 --Let's assume Part is the variable set to a part under the workspace.
 
-if Code.Match(Part.Transparency, 0, 0.5, 1)  then
+if ShadLibrary.Match(Part.Transparency, 0, 0.5, 1)  then
 --This part of the code runs if the part's transparency is either 0, 0.5, or 1.
 else
 --Otherwise...
@@ -1063,7 +1053,7 @@ ___
 
 **Description:** A simple replacement for checking if all variables must equal the same thing.
 
-**Setup:** `Code.AllMatch(MatchMe, Variables...)`
+**Setup:** `ShadLibrary.AllMatch(MatchMe, Variables...)`
 
 **Returns:** A boolean value; true if the following variables all match the MatchMe variable or false if not.
 | Variable | Type | Default | Description |
@@ -1074,9 +1064,9 @@ ___
 ### Usage Example
 
 ```lua
-local Result = Code.AllMatch(1, 2, 3, 1)
+local Result = ShadLibrary.AllMatch(1, 2, 3, 1)
 --Result would be false since they all need to equal the first variable (1).
-local Result = Code.AllMatch(1, 1, 1, 1)
+local Result = ShadLibrary.AllMatch(1, 1, 1, 1)
 --Result would be true.
 ```
 
@@ -1087,7 +1077,7 @@ ___
 
 **Description:** Can wait on multiple occasions, but will resume as soon as 1 of them is met.
 
-**Setup:** `Code.WaitOn(Variant...)`
+**Setup:** `ShadLibrary.WaitOn(Variant...)`
 
 **Returns:** The method that prevailed (only applicable for those who understand in the case of an event being returned).
 | Variable | Type | Default | Description |
@@ -1108,11 +1098,11 @@ ___
 
 ```lua
 --Let's assume Part is the variable set to a part under workspace, and we want to wait till it gets changed at all, but we don't want to wait more than 10 seconds for that to happen.
-Code.WaitOn(10, Part.Changed)
+ShadLibrary.WaitOn(10, Part.Changed)
 --However, if we want to wait on a specific property (Transparency in this case)...
-Code.WaitOn(10, Part:GetPropertyChangedSignal("Transparency"))
+ShadLibrary.WaitOn(10, Part:GetPropertyChangedSignal("Transparency"))
 --If we're using multiple of the same Events, we're gonna want to be able to tell the difference between them
-Code.WaitOn({"Part1", Part1.Part:GetPropertyChangedSignal("Transparency")}, {"Part2", Part2.Part:GetPropertyChangedSignal("Transparency")})
+ShadLibrary.WaitOn({"Part1", Part1.Part:GetPropertyChangedSignal("Transparency")}, {"Part2", Part2.Part:GetPropertyChangedSignal("Transparency")})
     --returns the string "Part1" if Part1's transparency changes, or "Part2" if Part2's transparency changes.
 ```
 
@@ -1123,7 +1113,7 @@ ___
 
 **Description:** Quickly make multiple of the same thing.
 
-**Setup:** `Code.Make(Data, Amount, SameTable)`
+**Setup:** `ShadLibrary.Make(Data, Amount, SameTable)`
 
 **Returns:** The data you've copied.
 | Variable | Type | Default | Description |
@@ -1136,17 +1126,17 @@ ___
 
 ```lua
 ----Example 1 (any data):
-local A, B, C = Code.Make("Test", 3)
+local A, B, C = ShadLibrary.Make("Test", 3)
 print(A, B, C) --Test, Test, Test
 
 ----Example 2a (connected tables):
 local Tab = {"A", "b"}
-local T1, T2 = Code.Make(Tab, 2, true)
+local T1, T2 = ShadLibrary.Make(Tab, 2, true)
 print(T1==T2) --true
 
 ----Example 2b (unconnected tables):
 local Tab = {"A", "b"}
-local T1, T2 = Code.Make(Tab, 2)
+local T1, T2 = ShadLibrary.Make(Tab, 2)
 print(T1==T2) --false
 ```
 
@@ -1157,7 +1147,7 @@ ___
 
 **Description:** Takes any number of seconds and returns a dictionary of all possible conversions from the formula **TimeConvert**.
 
-**Setup:** `Code.TimeTable(Seconds)`
+**Setup:** `ShadLibrary.TimeTable(Seconds)`
 
 **Returns:** A dictionary of time conversions.
 | Variable | Type | Default | Description |
@@ -1168,7 +1158,7 @@ ___
 
 ```lua
 --Converts 65 seconds into a table that returns 1 minute and 5 seconds.
-local Times = Code.TimeTable(65)
+local Times = ShadLibrary.TimeTable(65)
 print(Times)
 --[[Output: {
     ["Days"] = 0,
@@ -1187,7 +1177,7 @@ ___
 
 **Description:** Takes any number of seconds and converts that to a time format of your choosing.
 
-**Setup:** `Code.TimeFormat(Seconds, Format, Simple)`
+**Setup:** `ShadLibrary.TimeFormat(Seconds, Format, Simple)`
 
 **Returns:** A string containing the newly formatted time.
 | Variable | Type | Default | Description |
@@ -1216,23 +1206,23 @@ Note that when the **Simple** variable is set to *false*, you will instead need 
 
 ```lua
 --Example 1: Simple timer conversion for 65 seconds.
-local Time = Code.TimeFormat(65, "MM:SS.MiMiMi", true)
+local Time = ShadLibrary.TimeFormat(65, "MM:SS.MiMiMi", true)
 print(Time)
     --Expected output: "01:05.000"
 
 --Example 2: Takes Example 1 but removes the excess zero from the minutes, and removes the milliseconds.
-local Time = Code.TimeFormat(65, "M:SS")
+local Time = ShadLibrary.TimeFormat(65, "M:SS")
 print(Time)
     --Expected output: "1:05"
     --Note that the third variable is true by default, so it is unnecessary to include here.
 
 --Example 3: Displays 3 Hours  1 Minute  20.5 Seconds
-local Time = Code.TimeFormat(60^2 * 3 + 80.5, "HH:MM:SS.MiMiMi")
+local Time = ShadLibrary.TimeFormat(60^2 * 3 + 80.5, "HH:MM:SS.MiMiMi")
 print(Time)
     --Expected output: "03:01:20.500"
  
  --Example 4: How to utilize the third variable to be false to display more accurate information. This will display 6 days  1 Minute  20 Seconds
-local Time = Code.TimeFormat(60^2 * 24 * 6 + 80, "_D Days _HH:_MM:_SS._MiMiMi", false)
+local Time = ShadLibrary.TimeFormat(60^2 * 24 * 6 + 80, "_D Days _HH:_MM:_SS._MiMiMi", false)
 print(Time)
     --Expected output: "6 Days 00:01:20.000"
     --Had we not set the Simple variable to false, this function would have attempted to convert the word Days to a number for the number of Days as well since it starts with a D.
@@ -1245,7 +1235,7 @@ ___
 
 **Description:** Fetches plugin settings. For Plugins only.
 
-**Setup:** `Code.Plugin_Settings(Plugin, Setting...)`
+**Setup:** `ShadLibrary.Plugin_Settings(Plugin, Setting...)`
 
 **Returns:** The setting(s) you wanted to fetch or their defaults if they didn't exist.
 | Variable | Type | Default | Description |
@@ -1264,7 +1254,7 @@ The Setting table must be set up as:
 ### Usage Example
 
 ```lua
-local SettingA, SettingB = Code.Plugin_Settings(plugin, {"Color", Color3.new(1, 1, 1)}, {"Word", "Hello!"})
+local SettingA, SettingB = ShadLibrary.Plugin_Settings(plugin, {"Color", Color3.new(1, 1, 1)}, {"Word", "Hello!"})
 -- If either SettingA or B did not exist, the setting for their 1st value in the table, it would be set to the 2nd value in the pair.
 ```
 
@@ -1275,9 +1265,9 @@ ___
 
 **Description:** A simplified method of making a plugin widget. For Plugins only.
 
-**Setup 1:** `Code.Plugin_Widget(Plugin, Identifier, DisplayName, DockWidgetPluginGuiInfo)`
+**Setup 1:** `ShadLibrary.Plugin_Widget(Plugin, Identifier, DisplayName, DockWidgetPluginGuiInfo)`
 
-**Setup 2:** `Code.Plugin_Widget(Plugin, Identifier, DisplayName, InitialDockState, InitialEnabled, RestoreOverride, SizeX, SizeY, SizeMinimumX, SizeMinimumY)`
+**Setup 2:** `ShadLibrary.Plugin_Widget(Plugin, Identifier, DisplayName, InitialDockState, InitialEnabled, RestoreOverride, SizeX, SizeY, SizeMinimumX, SizeMinimumY)`
 
 **Returns:** The widget you've created.
 | Variable | Type | Default | Description |
@@ -1303,32 +1293,8 @@ local Widget = ShadLibrary.Plugin_Widget(plugin, "TestWidget", "Test Widget", My
 -- Creating a basic test widget with basically the default values in place.
 
 --Example 2
-local Widget = Code.Plugin_Widget(plugin, "TestWidget", "Test Widget", "Float", true, false, 200, 300, 150, 150)
+local Widget = ShadLibrary.Plugin_Widget(plugin, "TestWidget", "Test Widget", "Float", true, false, 200, 300, 150, 150)
 -- Creating a basic test widget with basically the default values in place.
-```
-
-___
-</details>
-
-<details><summary>SetAttributes</summary>
-
-**Aliases:** SetAtt, SetAtts
-
-**Description:** Sets multiple attributes at once.
-
-**Setup:** `Code.SetAttributes(Instance, Table)`
-
-**Returns:** Nothing.
-| Variable | Type | Default | Description |
-| --- | --- | --- | --- |
-| Instance | Instance | REQUIRED | The Instance that you'd like to add an attribute on to. |
-| Table | table | REQUIRED | A table listing the new attributes and their values. |
-
-### Usage Example
-
-```lua
-local Part = workspace.Brick
-Code.SetAttributes(Part, {TestString = "String!", TestNumber = 5, TestBoolean = false})
 ```
 
 ___
@@ -1340,9 +1306,9 @@ ___
 
 **Description:** Gets multiple specific attributes at once (in order).
 
-**Setup 1:** `Code.GetAttributes(Instance, AutoMake, Attribute...)`
+**Setup 1:** `ShadLibrary.GetAttributes(Instance, AutoMake, Attribute...)`
 
-**Setup 2:** `Code.GetAttributes(Instance, Attribute...)`
+**Setup 2:** `ShadLibrary.GetAttributes(Instance, Attribute...)`
 
 **Returns:** The attribute's value or **nil** if none exists.
 | Variable | Type | Default | Description |
@@ -1364,8 +1330,11 @@ If you're using the table variant and if there is a found attribute that does no
 ```lua
 ----Example 1
 local Part = workspace.Brick
-Code.SetAttributes(Part, {TestString = "String!", TestNumber = 5, TestBoolean = true})
-local A, B, C, D = Code.GetAttributes(Part, "TestNumber", "TestString", "TestBrick", "TestBoolean")
+
+--Lets say that Part has the following attributes:
+--TestNumber (5), TestString ("String!"), TestBoolean (true)
+
+local A, B, C, D = ShadLibrary.GetAttributes(Part, "TestNumber", "TestString", "TestBrick", "TestBoolean")
 --A would be 5
 --B would be "String!"
 --C would be nil since there is no match
@@ -1373,13 +1342,13 @@ local A, B, C, D = Code.GetAttributes(Part, "TestNumber", "TestString", "TestBri
 
 ----Example 2
 local Part = workspace.Brick
-local A, B = Code.GetAttributes(Part, {"TestNumber", 5}, "TestString")
+local A, B = ShadLibrary.GetAttributes(Part, {"TestNumber", 5}, "TestString")
 --A would be 5 if there wasn't one already set
 --B would be false assuming one wasn't there
 
 ----Example 3
 local Part = workspace.Brick
-local A, B = Code.GetAttributes(Part, false, {"TestNumber", 5}, "TestString")
+local A, B = ShadLibrary.GetAttributes(Part, false, {"TestNumber", 5}, "TestString")
 --A would be nil if it doesn't already exist since the AutoMake variable was set to false
 --B would be nil assuming one wasn't there
 ```
@@ -1393,7 +1362,7 @@ ___
 
 **Description:** Clears multiple attributes at once.
 
-**Setup:** `Code.ClearAttributes(Instance, Attribute...)`
+**Setup:** `ShadLibrary.ClearAttributes(Instance, Attribute...)`
 
 **Returns:** Nothing.
 | Variable | Type | Default | Description |
@@ -1404,18 +1373,13 @@ ___
 ### Usage Example
 
 ```lua
-----Taking from the "SetAttributes" example above:
 --Clearing specific ones:
 local Part = workspace.Brick
-Code.SetAttributes(Part, {TestString = "String!", TestNumber = 5, TestBoolean = false})
-task.wait(5)
-Code.ClearAttributes(Part, "TestString", "TestBoolean") --in this case, TestNumber remains
+ShadLibrary.ClearAttributes(Part, "TestString", "TestBoolean")
 
 --Clearing all:
 local Part = workspace.Brick
-Code.SetAttributes(Part, {TestString = "String!", TestNumber = 5, TestBoolean = false})
-task.wait(5)
-Code.ClearAttributes(Part) --in this case, none remains
+ShadLibrary.ClearAttributes(Part)
 ```
 </details>
 
@@ -1431,10 +1395,7 @@ This list is specifically for the functions where changing the properties of an 
 
 | Name | Type | Effects | Description | Example |
 | --- | --- | --- | --- | --- |
-| Same# | Property Name | Any | Allows you to set multiple properties to the same value. Provide a table where the first entry is the value you want to be set, then each subsequent entry is a string that is the name of the property you want to change. As long as the **#** at the end is a different number, you can use this as many times as necessary. | {Same1 = {true, "Anchored", "CanCollide"}, Same2 = {false, "CastShadow", "Locked"}} |
 | Sides | Property Name | Surfaces | Changes all of the sides for BaseParts at the same time. | {Sides = "Smooth"} |
-| AddTags | Property Name | Tags | Allows you to set multiple tags. | {AddTags = {"Tag1", "Tag2", etc...} |
-| RemoveTags | Property Name | Tags | Allows you to remove multiple tags. | {RemoveTags = {"Tag1", "Tag2", etc...} |
 | "nil" | Value | ObjectValues | Allows you to set a property to `nil` where applicable. | {Adornee = "nil"} |
 | "+#" | Value | Numbers | Adds the number **#** to the original value being changed. | {Value = "+0.5"} |
 | "-#" | Value | Numbers | Subtracts the number **#** to the original value being changed. | {Value = "-0.5"} |
@@ -1444,7 +1405,7 @@ This list is specifically for the functions where changing the properties of an 
 | "sqrt" | Value | Numbers | Returns the square root of the number being changed. | {Value = "sqrt"} |
 | "negate" | Value | Numbers | Basically inverts the number from negative/positive to the other. | {Value = "negate"} |
 | "not" | Value | Booleans | Returns the opposite boolean value. | {Value = "not"} |
-| Function | Value | Any | Inputs a function to return a value of your choosing. The first/only value of the function is always the Instance being changed. | See [Expanded Examples](#expanded-examples) for this instance. |
+| Function | Value | Any | Inputs a function to return a value of your choosing. The first/only value of the function is always the Instance being changed. | {Value = function(instance: Instance) end} |
 | "~X, Y, Z" | Value | Vector3 | Changes the Vector3 relative to its current value. The **X**, **Y**, and **Z** variables are the X, Y, and Z of the Vector3 Value. No spaces should be present here. | {Position = "~0, 5, 0"} |
 | **"~#, #, #"** | Value | CFrame | Translates as ToWorldSpace(CFrame). | {CFrame = "~0, 0, -5"} |
 | **"@#, #, #"** | Value | CFrame | Translates as CFrame*CFrame.fromEulerAnglesXYZ(#, #, #). Automatically converted to math.rad(#). | {CFrame = "@90, 0, 45"} |
@@ -1455,9 +1416,6 @@ This list is specifically for the functions where changing the properties of an 
 
 | Name | Type | Effects | Description | Example |
 | --- | --- | --- | --- | --- |
-| IsA | Property Name | Instances | Works just like **Part:IsA("BasePart"). | {IsA = "BasePart"} |
-| Attribute | Property Name | Attributes | Looks for 1 attribute to match to. | {Attribute = {"Attribute Name", DesiredValue} |
-| HasTag | Property Name | Tags | Checks if the given tag is present | {HasTag = "Tag1} |
 | ">#" | Value | Numbers | Detects anything greater than the **#** in its place. | {Transparency = ">0.5"} |
 | ">=#" | Value | Numbers | Detects anything greater or equal to the **#** in its place. | {Transparency = ">=0.5"} |
 | "<#" | Value | Numbers | Detects anything lower than the **#** in its place. | {Transparency = "<0.5"} |
