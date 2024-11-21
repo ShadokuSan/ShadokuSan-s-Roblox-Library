@@ -504,6 +504,7 @@ local Get = ShadLibrary.Find(workspace){
 local Get = ShadLibrary.Find(workspace){
 	functions = {
 		IsA = {
+			arguments = "BasePart",
 			interpretFunction = function(isBasePart: boolean)
 				if isBasePart then
 					return false
