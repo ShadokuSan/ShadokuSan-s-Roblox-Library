@@ -1100,19 +1100,19 @@ ___
 
 ```lua
 --In this example this will yield for both 10 and 20 seconds at the same time.
-ShadLibrary.WaitOn({"waitTime1", 10}, {"waitTime2", 20})
+ShadLibrary.WaitOn({methodName = "waitTime1", method = 10}, {methodName = "waitTime2", method = 20})
 	--Will only return "waitTime1" since 10 seconds is faster than 20.
 
 --Let's assume Part is the variable set to a part under workspace, and we want to wait till it gets changed at all, but we don't want to wait more than 10 seconds for that to happen.
-ShadLibrary.WaitOn({"waitTime", 10}, {"didChange", Part.Changed})
+ShadLibrary.WaitOn({methodName = "waitTime", method = 10}, {methodName = "didChange", method = Part.Changed})
 	--Will return either "waitTime" should 10 seconds pass with nothing happening, or "didChange" should the Part be changed.
 
 --However, if we want to wait on a specific property (Transparency in this case)...
-ShadLibrary.WaitOn({"waitTime", 10}, {"transparencyChanged", Part:GetPropertyChangedSignal("Transparency")})
+ShadLibrary.WaitOn({methodName = "waitTime", method = 10}, {methodName = "transparencyChanged", method = Part:GetPropertyChangedSignal("Transparency")})
 	--Same deal as the last example.
 
 --We can create our own means of waiting with a function
-ShadLibrary.WaitOn({"waitTime, 10}, {"myfunction", function() task.wait(5) end})
+ShadLibrary.WaitOn({methodName = "waitTime, method = 10}, {methodName = "myfunction", method = function() task.wait(5) end})
     --Anything may go into the function.
 ```
 
