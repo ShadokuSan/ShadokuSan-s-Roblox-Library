@@ -1077,33 +1077,43 @@ ___
 
 **Description:** Can wait on multiple occasions, but will resume as soon as 1 of them is met.
 
-**Setup:** `ShadLibrary.WaitOn(Variant...)`
+**Setup:** `ShadLibrary.WaitOn(methodTable...)`
 
-**Returns:** The method that prevailed (only applicable for those who understand in the case of an event being returned).
+**Returns:** The name of the method that finishes first.
 | Variable | Type | Default | Description |
 | --- | --- | --- | --- |
-| Variant | Number / Signal / Function / Table | REQUIRED | The method of waiting you'd like to input |
+| methodTable | {methodName: string, method: Number / Signal / Function} | REQUIRED | The method of waiting you'd like to input |
 
-**Variant Usage**
+**methodTable Variables**
 
-• Number: The number of seconds you'd like to wait. Same as **wait(Number)**.
+• methodName: The name of the **method** that will be returned should the accompanying **method** complete first.
 
-• Signal: An event such as **Instance.Changed**.
+• method: This is where your method of yielding will go which can be a couple of things:
 
-• Function: Your own method of waiting, I suppose. A function.
+• method > Number: The number of seconds you'd like to wait. Same as **wait(Number)**.
 
-• Table {Name, Signal}: Name is a string that you'd want to be returned, and Signal is an event or function. Makes for easier identification.
+• method > Signal: An event such as **Instance.Changed**.
+
+• method > Function: Your own method of yielding via an annonymous function.
 
 ### Usage Example
 
 ```lua
+--In this example this will yield for both 10 and 20 seconds at the same time.
+ShadLibrary.WaitOn({"waitTime1", 10}, {"waitTime2", 20})
+	--Will only return "waitTime1" since 10 seconds is faster than 20.
+
 --Let's assume Part is the variable set to a part under workspace, and we want to wait till it gets changed at all, but we don't want to wait more than 10 seconds for that to happen.
-ShadLibrary.WaitOn(10, Part.Changed)
+ShadLibrary.WaitOn({"waitTime", 10}, {"didChange", Part.Changed})
+	--Will return either "waitTime" should 10 seconds pass with nothing happening, or "didChange" should the Part be changed.
+
 --However, if we want to wait on a specific property (Transparency in this case)...
-ShadLibrary.WaitOn(10, Part:GetPropertyChangedSignal("Transparency"))
---If we're using multiple of the same Events, we're gonna want to be able to tell the difference between them
-ShadLibrary.WaitOn({"Part1", Part1.Part:GetPropertyChangedSignal("Transparency")}, {"Part2", Part2.Part:GetPropertyChangedSignal("Transparency")})
-    --returns the string "Part1" if Part1's transparency changes, or "Part2" if Part2's transparency changes.
+ShadLibrary.WaitOn({"waitTime", 10}, {"transparencyChanged", Part:GetPropertyChangedSignal("Transparency")})
+	--Same deal as the last example.
+
+--We can create our own means of waiting with a function
+ShadLibrary.WaitOn({"waitTime, 10}, {"myfunction", function() task.wait(5) end})
+    --Anything may go into the function.
 ```
 
 ___
